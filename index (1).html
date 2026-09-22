@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Are You an NRI This Year? — Segura Wealth Residency Checker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    /* Segura tokens (light) */
+    --cream:#F6F2ED;
+    --slate:#3A3D4A;
+    --copper:#B87040;
+    --copper-soft:#c98a5f;
+    --dark:#24221E;
+    --bg:var(--cream);
+    --surface:#fffdfa;
+    --ink:#2b2925;
+    --ink-soft:#6b675f;
+    --line:rgba(58,61,74,.16);
+    --line-strong:rgba(58,61,74,.32);
+    --accent:var(--copper);
+    --accent-ink:#7c4a24;
+    --good:#3f6b4f;
+    --warn:#9a5b2a;
+    --shadow:0 1px 0 rgba(58,61,74,.06);
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    --sans:"Inter",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:var(--dark);
+      --surface:#2c2a25;
+      --ink:#efe9df;
+      --ink-soft:#b3ada1;
+      --line:rgba(246,242,237,.16);
+      --line-strong:rgba(246,242,237,.30);
+      --accent:var(--copper-soft);
+      --accent-ink:#e0a878;
+      --good:#7fb08f;
+      --warn:#d89a5f;
+      --shadow:0 1px 0 rgba(0,0,0,.2);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:var(--dark);
+    --surface:#2c2a25;
+    --ink:#efe9df;
+    --ink-soft:#b3ada1;
+    --line:rgba(246,242,237,.16);
+    --line-strong:rgba(246,242,237,.30);
+    --accent:var(--copper-soft);
+    --accent-ink:#e0a878;
+    --good:#7fb08f;
+    --warn:#d89a5f;
+    --shadow:0 1px 0 rgba(0,0,0,.2);
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:clamp(20px,5vw,44px) clamp(18px,5vw,32px) 64px}
+
+  /* Masthead */
+  .mast{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:clamp(28px,6vw,52px)}
+  .brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+  .mark{font-family:var(--serif);font-weight:600;font-size:26px;letter-spacing:.01em;color:var(--ink);line-height:1}
+  .mark b{color:var(--accent);font-weight:600}
+  .tag{font-size:12.5px;color:var(--ink-soft);white-space:nowrap}
+  .theme-btn{border:1px solid var(--line);background:transparent;color:var(--ink-soft);
+    font-family:var(--sans);font-size:12.5px;padding:6px 11px;border-radius:999px;cursor:pointer}
+  .theme-btn:hover{border-color:var(--line-strong);color:var(--ink)}
+
+  /* Progress waterline */
+  .rail{display:flex;align-items:center;gap:8px;margin:0 0 26px;height:14px}
+  .rail .seg{height:2px;flex:1;background:var(--line);border-radius:2px;position:relative;overflow:hidden}
+  .rail .seg.done{background:var(--accent)}
+  .rail .seg.on::after{content:"";position:absolute;inset:0;background:var(--accent);
+    transform-origin:left;animation:fill .5s ease forwards}
+  @keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @media (prefers-reduced-motion:reduce){.rail .seg.on::after{animation:none}}
+
+  /* Screens */
+  .screen{display:none}
+  .screen.active{display:block;animation:rise .34s ease}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.screen.active{animation:none}}
+
+  .kicker{font-family:var(--sans);font-size:13px;color:var(--accent-ink);margin:0 0 12px;font-weight:500}
+  h1.q{font-family:var(--serif);font-weight:600;font-size:clamp(30px,7vw,46px);line-height:1.08;
+    letter-spacing:.005em;margin:0 0 14px;color:var(--ink);max-width:16ch}
+  h2.q{font-family:var(--serif);font-weight:600;font-size:clamp(24px,5.4vw,34px);line-height:1.12;
+    margin:0 0 14px;color:var(--ink)}
+  .lede{font-size:16.5px;color:var(--ink-soft);max-width:56ch;margin:0 0 26px;line-height:1.55}
+
+  /* Buttons */
+  .btn{font-family:var(--sans);font-size:15.5px;font-weight:500;cursor:pointer;border-radius:10px;
+    padding:13px 22px;border:1px solid transparent;transition:background .15s,border-color .15s,color .15s}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn.primary:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+  :root[data-theme="dark"] .btn.primary,
+  :root:not([data-theme="light"]) .btn.primary{color:#211f1b}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn.link{background:none;border:none;color:var(--accent-ink);padding:6px 0;font-size:14.5px;text-decoration:underline;text-underline-offset:3px}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:26px}
+
+  /* Expander */
+  details.exp{border-top:1px solid var(--line);margin-top:18px;padding-top:14px}
+  details.exp summary{cursor:pointer;list-style:none;color:var(--accent-ink);font-size:14.5px;font-weight:500;display:flex;gap:8px;align-items:center}
+  details.exp summary::-webkit-details-marker{display:none}
+  details.exp summary .chev{transition:transform .2s;font-size:12px}
+  details.exp[open] summary .chev{transform:rotate(90deg)}
+  details.exp .body{margin-top:12px;color:var(--ink-soft);font-size:15px;line-height:1.6;max-width:58ch}
+  details.exp .body b{color:var(--ink)}
+
+  /* Option cards */
+  .opts{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+  .opt{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:16px 18px;cursor:pointer;
+    display:block;width:100%;text-align:left;font-family:var(--sans);transition:border-color .15s,box-shadow .15s;box-shadow:var(--shadow)}
+  .opt:hover{border-color:var(--accent)}
+  .opt.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+  .opt .ot{font-size:16.5px;font-weight:600;color:var(--ink)}
+  .opt .os{font-size:14px;color:var(--ink-soft);margin-top:3px}
+  .unfold{overflow:hidden;max-height:0;transition:max-height .3s ease}
+  .opt.sel .unfold{max-height:260px}
+  .unfold .in{padding-top:12px;margin-top:12px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:14.5px;line-height:1.55}
+
+  /* Fields */
+  .field{margin:18px 0}
+  .field label{display:block;font-size:14px;font-weight:500;color:var(--ink);margin-bottom:7px}
+  .field .hint{font-size:13px;color:var(--ink-soft);margin-top:6px;line-height:1.5}
+  input[type=number],input[type=date],input[type=email]{
+    width:100%;font-family:var(--sans);font-size:16px;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line-strong);border-radius:9px;padding:11px 13px}
+  input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+  .seg-toggle{display:inline-flex;border:1px solid var(--line-strong);border-radius:999px;padding:3px;margin-bottom:6px;background:var(--surface)}
+  .seg-toggle button{border:none;background:none;font-family:var(--sans);font-size:13.5px;color:var(--ink-soft);padding:7px 15px;border-radius:999px;cursor:pointer}
+  .seg-toggle button.on{background:var(--accent);color:#fff}
+  :root[data-theme="dark"] .seg-toggle button.on,:root:not([data-theme="light"]) .seg-toggle button.on{color:#211f1b}
+
+  /* Voyage rows */
+  .voyage{border:1px solid var(--line);border-radius:11px;padding:14px;margin-bottom:12px;background:var(--surface);position:relative}
+  .voyage .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .voyage .full{grid-column:1/-1}
+  .voyage .rm{position:absolute;top:10px;right:12px;border:none;background:none;color:var(--ink-soft);cursor:pointer;font-size:18px;line-height:1}
+  .voyage .rm:hover{color:var(--warn)}
+  .chk{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--ink);margin-top:4px}
+  .chk input{width:17px;height:17px;accent-color:var(--accent)}
+  .add-v{border:1px dashed var(--line-strong);background:none;color:var(--accent-ink);font-family:var(--sans);
+    font-size:14.5px;padding:11px;border-radius:10px;cursor:pointer;width:100%}
+  .add-v:hover{border-color:var(--accent)}
+
+  .result-line{margin-top:20px;padding:16px 18px;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0}
+  .result-line .big{font-family:var(--serif);font-size:23px;color:var(--ink);font-weight:600}
+  .result-line .sub{font-size:14.5px;color:var(--ink-soft);margin-top:4px}
+
+  .chip{display:inline-block;font-size:12.5px;color:var(--warn);border:1px solid var(--warn);border-radius:999px;padding:4px 11px;margin-top:12px}
+
+  .qblock{margin:26px 0;padding-bottom:4px}
+  .qblock .qh{font-size:16.5px;font-weight:600;color:var(--ink);margin-bottom:12px}
+  .yesno{display:flex;gap:10px;flex-wrap:wrap}
+  .yesno button{font-family:var(--sans);font-size:15px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:9px;padding:10px 20px;cursor:pointer}
+  .yesno button.on{border-color:var(--accent);background:var(--accent);color:#fff}
+  :root[data-theme="dark"] .yesno button.on,:root:not([data-theme="light"]) .yesno button.on{color:#211f1b}
+
+  /* Outcome */
+  .verdict{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 22px}
+  @media(max-width:520px){.verdict{grid-template-columns:1fr}.voyage .grid{grid-template-columns:1fr}}
+  .vcard{border:1px solid var(--line-strong);border-radius:14px;padding:20px}
+  .vcard .vlab{font-size:13px;color:var(--ink-soft);margin-bottom:8px}
+  .vcard .vval{font-family:var(--serif);font-weight:600;font-size:clamp(22px,5vw,29px);line-height:1.1;color:var(--ink)}
+  .vcard.hl{border-color:var(--accent);background:var(--surface)}
+  .vcard .vval em{font-style:normal;color:var(--accent-ink)}
+  .diverge{border:1px solid var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);border-radius:14px;padding:18px 20px;margin:0 0 22px}
+  .diverge .dh{font-family:var(--serif);font-size:21px;font-weight:600;color:var(--ink);margin-bottom:6px}
+  .diverge p{margin:0;color:var(--ink-soft);font-size:15px;line-height:1.55}
+  .reason{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 22px;background:var(--surface)}
+  .reason .rh{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px}
+  .reason ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;line-height:1.6}
+  .reason .fine{font-size:12.5px;color:var(--ink-soft);margin-top:10px;font-style:italic}
+  .next{margin:0 0 22px}
+  .next .nh{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px}
+  .next a{display:flex;justify-content:space-between;align-items:center;gap:12px;text-decoration:none;
+    border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin-bottom:9px;color:var(--ink);background:var(--surface);transition:border-color .15s}
+  .next a:hover{border-color:var(--accent)}
+  .next a .na{font-weight:600;font-size:15px}
+  .next a .nd{font-size:13px;color:var(--ink-soft);margin-top:2px}
+  .next a .go{color:var(--accent-ink);font-size:20px}
+  .gate{border:1px solid var(--accent);border-radius:14px;padding:20px;margin:0 0 20px;background:var(--surface)}
+  .gate .gh{font-family:var(--serif);font-size:21px;font-weight:600;color:var(--ink);margin-bottom:6px}
+  .gate p{margin:0 0 14px;color:var(--ink-soft);font-size:14.5px}
+  .gate .row{display:flex;gap:10px;flex-wrap:wrap}
+  .gate .row input{flex:1;min-width:180px}
+  .gate .np{font-size:12.5px;color:var(--ink-soft);margin-top:10px}
+  .talk{border-top:1px solid var(--line);padding-top:20px;margin-top:6px;color:var(--ink-soft);font-size:15px}
+  .talk .btn{margin-top:12px}
+
+  .disc{font-size:12.5px;color:var(--ink-soft);line-height:1.6;border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin:22px 0 0;background:transparent}
+  .disc b{color:var(--ink)}
+
+  footer{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;font-size:12.5px;color:var(--ink-soft);line-height:1.7}
+  footer .cred{color:var(--ink);font-weight:500}
+  .waterline{height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent);margin:0 0 4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="brand">
+      <span class="mark">Segura<b>.</b></span>
+      <span class="tag">Wealth for lives that don't fit the template</span>
+    </div>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle light or dark">Dark</button>
+  </header>
+
+  <div class="rail" id="rail" aria-hidden="true">
+    <span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span>
+  </div>
+
+  <!-- SCREEN 0: ENTRY -->
+  <section class="screen active" id="s0">
+    <p class="kicker">Residency checker for merchant navy officers</p>
+    <h1 class="q">Are you an NRI this year?</h1>
+    <p class="lede">For a seafarer, the answer isn't obvious — and it isn't the same as your bank's answer. Three quick questions, counted the way the law actually counts them. About 90 seconds.</p>
+    <div class="actions">
+      <button class="btn primary" data-go="s1">Check my status</button>
+    </div>
+    <details class="exp">
+      <summary><span class="chev">▶</span> Why isn't this obvious?</summary>
+      <div class="body">Because you have <b>two residencies</b>, not one. The Income-tax Act decides your status by the days you spend in India this year — but for a seafarer, the days you're on an eligible international voyage don't count, and they're read off your <b>CDC</b>, not your passport. FEMA — the law behind your NRE account — decides it differently again, by intention and last year. This tool works out both, and shows you where they don't line up. That gap is where most officers get caught.</div>
+    </details>
+  </section>
+
+  <!-- SCREEN 1: WHO -->
+  <section class="screen" id="s1">
+    <p class="kicker">Step 1 of 3</p>
+    <h2 class="q">Which of these is you right now?</h2>
+    <div class="opts" id="whoOpts">
+      <button class="opt" data-who="A">
+        <div class="ot">I'm sailing on rotation</div>
+        <div class="os">Contracts at sea, home in India between them.</div>
+        <div class="unfold"><div class="in">Then your status can change from one year to the next, depending on how long your voyages kept you out. This is the group the day-count rules — and Rule 126 — were written for. We'll count your days the way an assessing officer would.</div></div>
+      </button>
+      <button class="opt" data-who="B">
+        <div class="ot">I've settled abroad</div>
+        <div class="os">Living overseas now, maybe on an OCI.</div>
+        <div class="unfold"><div class="in">Then for Indian tax you're almost certainly a non-resident, and the day-count is a formality rather than a cliff-edge. What matters for you is how you invest back into India, and the treaty between India and where you live. We'll confirm your status, then point you there.</div></div>
+      </button>
+      <button class="opt" data-who="C">
+        <div class="ot">I've just come ashore</div>
+        <div class="os">Stopped sailing — back in India for good, or heading there.</div>
+        <div class="unfold"><div class="in">Then you're in the most valuable — and most missed — window of your financial life. For two to three years after you return you may be RNOR, and your foreign income can stay outside Indian tax while you reorganise it. It closes on a date you can calculate. We'll check whether you're in it.</div></div>
+      </button>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" data-back="s0">Back</button>
+      <button class="btn primary" id="s1next" data-go="s2" disabled>Continue</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: DAYS -->
+  <section class="screen" id="s2">
+    <p class="kicker">Step 2 of 3</p>
+    <h2 class="q">Your days in India this tax year</h2>
+    <p class="lede" id="fyLabel">FY 2026-27 · 1 Apr 2026 – 31 Mar 2027</p>
+
+    <div class="seg-toggle" id="modeToggle" role="tablist">
+      <button data-mode="voyages" class="on">Enter my voyages</button>
+      <button data-mode="total">Just enter total days</button>
+    </div>
+
+    <!-- Mode voyages -->
+    <div id="modeVoyages">
+      <div id="voyageList"></div>
+      <button class="add-v" id="addVoyage">+ Add a voyage</button>
+      <div class="field">
+        <label for="otherOut">Other full days outside India this year (leave or travel not on these voyages)</label>
+        <input type="number" id="otherOut" min="0" max="366" placeholder="0" inputmode="numeric">
+      </div>
+      <details class="exp" open>
+        <summary><span class="chev">▶</span> Why my CDC and not my passport?</summary>
+        <div class="body">Because of <b>Rule 126</b> of the Income-tax Rules. For a crew member, the days you spend on an <b>eligible voyage</b> — an international run between an Indian port and a foreign one — don't count as days in India, and the law measures them from the join and sign-off dates in your <b>Continuous Discharge Certificate</b>. It's the one place the tax code writes a rule just for seafarers. Most calculators — and most banks — miss it and count your passport, which can wrongly tip you into "resident." If a voyage began or ended at a foreign port, your passport stamps are the better record — mark it below and use those dates.</div>
+      </details>
+    </div>
+
+    <!-- Mode total -->
+    <div id="modeTotal" style="display:none">
+      <div class="field">
+        <label for="totalDays">Days physically in India this tax year</label>
+        <input type="number" id="totalDays" min="0" max="366" placeholder="0" inputmode="numeric">
+        <div class="hint">On rotation? Switch to voyage mode above for an accurate count under Rule 126.</div>
+      </div>
+    </div>
+
+    <div class="result-line" id="s2result" style="display:none">
+      <div class="big" id="s2big"></div>
+      <div class="sub" id="s2sub"></div>
+    </div>
+
+    <details class="exp">
+      <summary><span class="chev">▶</span> The 182-day rule, and why it's really 182 for you</summary>
+      <div class="body">Anyone is a resident if they're in India <b>182 days or more</b> in the year. There's a second test — 60 days this year plus 365 across the last four — but because you left India <b>for employment as a seafarer</b>, that 60-day limb is stretched to 182 for you (Section 6). So in practice one line decides it: 182 days in India. Stay under, and you're a non-resident for the year.</div>
+    </details>
+
+    <div class="actions">
+      <button class="btn ghost" data-back="s1">Back</button>
+      <button class="btn primary" id="s2next">Continue</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: HISTORY / RNOR -->
+  <section class="screen" id="s3">
+    <p class="kicker">Step 3 of 3</p>
+    <h2 class="q">The last few years</h2>
+    <p class="lede">These decide whether a "resident" year makes you a full resident — or just RNOR, with your foreign income still largely out of Indian tax.</p>
+
+    <div class="qblock">
+      <div class="qh">Were you a non-resident (NRI) in at least 9 of the last 10 years?</div>
+      <div class="yesno" data-q="nr910">
+        <button data-v="yes">Yes</button>
+        <button data-v="no">No</button>
+        <button data-v="unsure">Not sure</button>
+      </div>
+      <details class="exp"><summary><span class="chev">▶</span> Why this matters</summary>
+        <div class="body">This is the first RNOR test. If you were a non-resident in <b>9 of the last 10 years</b>, then even in a year you tip into "resident," you're only <b>RNOR</b> — and most of your foreign income still stays out of Indian tax. Years at sea usually stack up in your favour here.</div>
+      </details>
+    </div>
+
+    <div class="qblock">
+      <div class="qh">Roughly how many days were you in India across the last 7 years?</div>
+      <input type="number" id="days7" min="0" max="2557" placeholder="e.g. 640" inputmode="numeric" style="max-width:220px">
+      <details class="exp"><summary><span class="chev">▶</span> Why this matters</summary>
+        <div class="body">The second RNOR test, and you only need to pass one. <b>729 days or fewer</b> in India across the last seven years also makes you RNOR rather than a full resident. Seven years of rotations rarely add up past that line.</div>
+      </details>
+    </div>
+
+    <div class="qblock" id="edgeGate">
+      <div class="qh">Is your India-source income above ₹15 lakh this year?</div>
+      <div class="hint" style="margin:-4px 0 10px">Your ship salary earned abroad is not India-source. This means rent, Indian interest, Indian capital gains, and the like.</div>
+      <div class="yesno" data-q="inc15">
+        <button data-v="no">No / not sure</button>
+        <button data-v="yes">Yes</button>
+      </div>
+      <div id="taxedElsewhere" style="display:none;margin-top:16px">
+        <div class="qh">Do you pay tax on your income in another country?</div>
+        <div class="yesno" data-q="taxed">
+          <button data-v="yes">Yes</button>
+          <button data-v="no">No</button>
+        </div>
+        <details class="exp"><summary><span class="chev">▶</span> Why we ask</summary>
+          <div class="body">Two rules catch high earners. If your <b>Indian</b> income crosses <b>₹15 lakh</b>, a shorter <b>120-day</b> line can make you resident (Section 6(2)(b)); and if on top of that you pay tax <b>nowhere</b>, you can be <b>deemed resident</b> — though still only as RNOR. Most officers earn abroad and sit under ₹15 lakh of Indian income, so this usually doesn't apply.</div>
+        </details>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn ghost" data-back="s2">Back</button>
+      <button class="btn primary" id="s3next">See my status</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 4: OUTCOME -->
+  <section class="screen" id="s4">
+    <p class="kicker">Your likely status</p>
+    <div class="verdict">
+      <div class="vcard hl"><div class="vlab">For income tax, this year</div><div class="vval" id="itVal">—</div></div>
+      <div class="vcard"><div class="vlab">For FEMA — banking &amp; investing</div><div class="vval" id="femaVal">—</div></div>
+    </div>
+
+    <div class="diverge" id="divergeBox" style="display:none">
+      <div class="dh">These two don't match this year — and that's the trap.</div>
+      <p id="divergeText"></p>
+    </div>
+
+    <div class="reason">
+      <div class="rh">How we got there</div>
+      <ol id="reasonList"></ol>
+      <div class="fine">Estimated under Section 6 of the Income-tax Act and Rule 126 of the Income-tax Rules, on the dates you entered.</div>
+    </div>
+
+    <div class="next">
+      <div class="nh">Your next step</div>
+      <div id="nextLinks"></div>
+    </div>
+
+    <div class="gate">
+      <div class="gh" id="gateH">Want this as a plan, not just a status?</div>
+      <p id="gateP">Enter your email and we'll send the guide written for seafarers — the specific moves, in order, for your situation.</p>
+      <div class="row" id="gateRow">
+        <input type="email" id="email" placeholder="you@email.com" aria-label="Your email">
+        <button class="btn primary" id="sendGuide">Send the guide</button>
+      </div>
+      <div class="np">No spam, no sales calls unless you ask. Just the guide.</div>
+    </div>
+
+    <div class="talk">
+      Rather talk it through? A 20-minute call — your voyages, your status, the paperwork you'll actually need. No obligation.
+      <div><button class="btn ghost">Book a call</button></div>
+    </div>
+
+    <div class="disc">
+      <b>An educational estimate</b> under Section 6 of the Income-tax Act and Rule 126, based on the dates you enter. It simplifies some edge cases — deemed residency, split-year situations, coastal-waters postings and CDC/passport mismatches — and is only as accurate as your day counts. It is not tax advice. Confirm your status with a qualified professional before you act or file. Segura Wealth is an AMFI-registered mutual fund distributor, not a tax or investment adviser.
+    </div>
+
+    <div class="actions">
+      <button class="btn ghost" data-back="s3">Back</button>
+      <button class="btn link" id="restart">Start over</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="waterline"></div>
+    <div class="cred">AMFI Registered Mutual Fund Distributor · ARN-XXXXXX</div>
+    <div>Mutual fund investments are subject to market risks. Read all scheme related documents carefully. This tool is educational and does not constitute tax, legal or investment advice.</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var state = {
+    who:null, mode:"voyages",
+    voyages:[], otherOut:0, totalDays:null,
+    nr910:null, days7:null, inc15:null, taxed:null
+  };
+
+  // ---- Tax year setup (current FY) ----
+  var today = new Date();
+  var fyStartYear = (today.getMonth() >= 3) ? today.getFullYear() : today.getFullYear()-1; // Apr = month 3
+  var fyStart = new Date(fyStartYear,3,1), fyEnd = new Date(fyStartYear+1,2,31);
+  function daysInFY(){ return Math.round((fyEnd - fyStart)/86400000) + 1; }
+  var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  document.getElementById("fyLabel").textContent =
+    "FY "+fyStartYear+"-"+String((fyStartYear+1)%100).padStart(2,"0")+
+    " · 1 Apr "+fyStartYear+" – 31 Mar "+(fyStartYear+1);
+
+  // ---- Navigation ----
+  var screens=["s0","s1","s2","s3","s4"];
+  function show(id){
+    screens.forEach(function(s){document.getElementById(s).classList.toggle("active",s===id);});
+    var idx=screens.indexOf(id), segs=document.querySelectorAll("#rail .seg");
+    segs.forEach(function(seg,i){seg.classList.remove("done","on");
+      if(i<idx-0 && i<4){ if(i<idx) seg.classList.add("done"); }});
+    // map: steps 1-3 -> segments; outcome fills all
+    segs.forEach(function(seg,i){seg.classList.remove("done","on");});
+    var filled = id==="s4"?4:idx;
+    for(var i=0;i<4;i++){ if(i<filled) segs[i].classList.add("done"); }
+    if(idx>=1 && idx<=3) segs[idx-1] && segs[idx-1].classList.add("on");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.body.addEventListener("click",function(e){
+    var g=e.target.closest("[data-go]"), b=e.target.closest("[data-back]");
+    if(g){ if(g.id==="s2next"||g.id==="s3next") return; show(g.getAttribute("data-go")); }
+    if(b){ show(b.getAttribute("data-back")); }
+  });
+
+  // ---- Theme ----
+  var tb=document.getElementById("themeBtn");
+  tb.addEventListener("click",function(){
+    var cur=document.documentElement.getAttribute("data-theme");
+    var next = cur==="dark"?"light":"dark";
+    document.documentElement.setAttribute("data-theme",next);
+    tb.textContent = next==="dark"?"Light":"Dark";
+    try{localStorage.setItem("segura-theme",next);}catch(e){}
+  });
+  try{var saved=localStorage.getItem("segura-theme"); if(saved){document.documentElement.setAttribute("data-theme",saved); tb.textContent=saved==="dark"?"Light":"Dark";}}catch(e){}
+
+  // ---- Step 1: who ----
+  document.getElementById("whoOpts").addEventListener("click",function(e){
+    var o=e.target.closest(".opt"); if(!o) return;
+    document.querySelectorAll("#whoOpts .opt").forEach(function(x){x.classList.remove("sel");});
+    o.classList.add("sel");
+    state.who=o.getAttribute("data-who");
+    document.getElementById("s1next").disabled=false;
+    // default mode per branch
+    setMode(state.who==="A"?"voyages":"total");
+  });
+
+  // ---- Step 2: mode ----
+  function setMode(m){
+    state.mode=m;
+    document.querySelectorAll("#modeToggle button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-mode")===m);});
+    document.getElementById("modeVoyages").style.display = m==="voyages"?"block":"none";
+    document.getElementById("modeTotal").style.display = m==="total"?"block":"none";
+    updateS2();
+  }
+  document.getElementById("modeToggle").addEventListener("click",function(e){
+    var btn=e.target.closest("button"); if(btn) setMode(btn.getAttribute("data-mode"));
+  });
+
+  function voyageRow(i){
+    return '<div class="voyage" data-i="'+i+'">'+
+      '<button class="rm" aria-label="Remove voyage">×</button>'+
+      '<div class="grid">'+
+      '<div><label style="font-size:13px;color:var(--ink-soft)">Sign-on date</label><input type="date" data-f="on"></div>'+
+      '<div><label style="font-size:13px;color:var(--ink-soft)">Sign-off date</label><input type="date" data-f="off"></div>'+
+      '</div>'+
+      '<label class="chk full"><input type="checkbox" data-f="eligible" checked> International voyage (India ↔ foreign port)</label>'+
+      '<label class="chk full"><input type="checkbox" data-f="foreignport"> A foreign port was involved — use my passport dates</label>'+
+      '</div>';
+  }
+  var vList=document.getElementById("voyageList");
+  function addVoyage(){ var i=state.voyages.length; state.voyages.push({on:null,off:null,eligible:true,foreignport:false});
+    vList.insertAdjacentHTML("beforeend",voyageRow(i)); }
+  document.getElementById("addVoyage").addEventListener("click",function(){addVoyage();});
+  addVoyage();
+
+  vList.addEventListener("input",function(e){
+    var row=e.target.closest(".voyage"); if(!row) return; var i=+row.getAttribute("data-i");
+    var f=e.target.getAttribute("data-f");
+    if(f==="eligible"||f==="foreignport") state.voyages[i][f]=e.target.checked;
+    else state.voyages[i][f]=e.target.value;
+    updateS2();
+  });
+  vList.addEventListener("click",function(e){
+    if(e.target.classList.contains("rm")){
+      var row=e.target.closest(".voyage"); var i=+row.getAttribute("data-i");
+      state.voyages.splice(i,1); row.remove();
+      // reindex
+      Array.prototype.forEach.call(vList.children,function(c,idx){c.setAttribute("data-i",idx);});
+      updateS2();
+    }
+  });
+  document.getElementById("otherOut").addEventListener("input",function(e){state.otherOut=+e.target.value||0;updateS2();});
+  document.getElementById("totalDays").addEventListener("input",function(e){state.totalDays=e.target.value===""?null:+e.target.value;updateS2();});
+
+  function voyageDays(v){
+    if(!v.on||!v.off) return 0;
+    var a=new Date(v.on), b=new Date(v.off);
+    if(isNaN(a)||isNaN(b)||b<a) return 0;
+    return Math.round((b-a)/86400000)+1; // inclusive of both terminal dates
+  }
+  function computeDaysInIndia(){
+    if(state.mode==="total") return state.totalDays;
+    var out=0;
+    state.voyages.forEach(function(v){ if(v.eligible) out+=voyageDays(v); });
+    out+=state.otherOut||0;
+    var di = daysInFY() - out;
+    if(di<0) di=0; if(di>daysInFY()) di=daysInFY();
+    return di;
+  }
+  function updateS2(){
+    var di=computeDaysInIndia();
+    var box=document.getElementById("s2result");
+    if(di===null||isNaN(di)){ box.style.display="none"; return; }
+    box.style.display="block";
+    document.getElementById("s2big").textContent="You were in India about "+di+" days this tax year.";
+    var resident = di>=182;
+    document.getElementById("s2sub").textContent = resident
+      ? "That's over 182 — so on the day-count alone you're provisionally a resident. The next questions decide whether that means full resident or RNOR."
+      : "That's under 182 — so on the day-count alone you're a non-resident for the year.";
+  }
+  document.getElementById("s2next").addEventListener("click",function(){
+    var di=computeDaysInIndia();
+    if(di===null||isNaN(di)){ alert("Add at least one voyage or your total days in India first."); return; }
+    // Skip logic: clear NR and not branch C -> straight to outcome
+    var resident = di>=182;
+    if(!resident && state.who!=="C"){ compute(); show("s4"); }
+    else { show("s3"); }
+  });
+
+  // ---- Step 3 ----
+  document.querySelectorAll('#s3 .yesno').forEach(function(g){
+    g.addEventListener("click",function(e){
+      var btn=e.target.closest("button"); if(!btn) return;
+      g.querySelectorAll("button").forEach(function(x){x.classList.remove("on");});
+      btn.classList.add("on");
+      var q=g.getAttribute("data-q"); state[q]=btn.getAttribute("data-v");
+      if(q==="inc15"){ document.getElementById("taxedElsewhere").style.display = state.inc15==="yes"?"block":"none"; }
+    });
+  });
+  document.getElementById("days7").addEventListener("input",function(e){state.days7=e.target.value===""?null:+e.target.value;});
+  document.getElementById("s3next").addEventListener("click",function(){ compute(); show("s4"); });
+
+  // ---- Compute ----
+  function compute(){
+    var di=computeDaysInIndia();
+    var relaxed = (state.who==="A"||state.who==="B"); // left India for employment / abroad
+    var inc15 = state.inc15==="yes";
+    var taxedElse = state.taxed==="yes";
+    var d4 = null; // days last 4 yrs not separately captured in v1; treat 365-limb via history proxy
+
+    // Resident test (Section 6)
+    var residentBy182 = di>=182;
+    var residentBy120 = inc15 && di>=120; // proxy: assumes 365-in-4 met if high earner visiting
+    var residentBy60  = (!relaxed) && di>=60; // proxy for came-ashore w/ 365-in-4
+    var deemed = inc15 && !taxedElse;
+    var resident = residentBy182 || residentBy120 || residentBy60;
+
+    var itStatus, why=[];
+    if(!resident && !deemed){
+      itStatus="Non-Resident (NRI)";
+      why.push("You were in India "+di+" days — under 182, and the 60-day limb doesn't apply to a seafarer who left for employment (Section 6). So you're a non-resident.");
+    } else {
+      // RNOR sub-tests
+      var rnor = (state.nr910==="yes") || (state.days7!==null && state.days7<=729) || deemed || residentBy120;
+      if(residentBy182) why.push("You were in India "+di+" days — 182 or more — so you're a resident this year (Section 6).");
+      else if(residentBy120) why.push("Your India income is above ₹15 lakh and you were in India 120+ days, so the shorter 120-day line makes you a resident (Section 6(2)(b)).");
+      else if(deemed) why.push("Your India income is above ₹15 lakh and you're not taxed in any other country, so you're a deemed resident — classified as RNOR.");
+      else why.push("On the day-count and history you entered, you're a resident this year.");
+
+      if(rnor){
+        itStatus="Resident but Not Ordinarily Resident (RNOR)";
+        if(state.nr910==="yes") why.push("But you were a non-resident in 9 of the last 10 years, so you're RNOR — not a full resident. Most foreign income stays out of Indian tax.");
+        else if(state.days7!==null && state.days7<=729) why.push("But you were in India only "+state.days7+" days over the last 7 years (729 or fewer), so you're RNOR — not a full resident.");
+        else if(deemed) why.push("Deemed residents are classified RNOR, so foreign income other than India-controlled business income stays outside Indian tax.");
+      } else {
+        itStatus="Resident & Ordinarily Resident (ROR)";
+        why.push("You don't meet either RNOR test on what you entered, so this year you're a full resident — worldwide income is taxable and foreign assets must be reported.");
+      }
+    }
+
+    // FEMA axis
+    var fema, femaProi;
+    if(state.who==="C"){ fema="Person Resident in India (from your return)"; femaProi=false;
+      why.push("Under FEMA you became a resident from the day you returned for good — your NRE/NRO accounts must be redesignated (FEMA §2(v)).");
+    } else { fema="Person Resident Outside India (NRI)"; femaProi=true;
+      why.push("Under FEMA you're a person resident outside India — which is what lets you hold NRE / NRO / FCNR accounts (FEMA §2(v)).");
+    }
+
+    var itResidentCat = (itStatus.indexOf("Non-Resident")===-1);
+    var diverge = (itResidentCat && femaProi) || (!itResidentCat && !femaProi);
+
+    render(itStatus, fema, diverge, why, itResidentCat, femaProi);
+  }
+
+  function render(itStatus, fema, diverge, why, itResidentCat, femaProi){
+    // verdict values (shorten)
+    var itShort = itStatus.replace(" (NRI)","").replace("Resident but Not Ordinarily Resident","RNOR")
+      .replace("Resident & Ordinarily Resident","Full Resident");
+    document.getElementById("itVal").innerHTML = "<em>"+itShort+"</em>";
+    document.getElementById("femaVal").textContent = femaProi?"NRI (resident outside India)":"Resident in India";
+
+    // diverge
+    var db=document.getElementById("divergeBox");
+    if(diverge){
+      db.style.display="block";
+      document.getElementById("divergeText").textContent = femaProi
+        ? "Your bank still treats you as an NRI — so your NRE account is fine — but for income tax you've tipped into resident this year. That changes what's taxable and what you must report. This is exactly the situation to get a second pair of eyes on before you file."
+        : "For income tax you're a non-resident, but under FEMA you're now resident in India — so your NRE/NRO accounts need redesignating even though your tax status hasn't caught up. Worth sorting before it becomes a compliance issue.";
+    } else db.style.display="none";
+
+    // reasoning
+    var ol=document.getElementById("reasonList"); ol.innerHTML="";
+    why.forEach(function(w){var li=document.createElement("li");li.textContent=w;ol.appendChild(li);});
+
+    // next links per branch + status
+    var links=[];
+    if(state.who==="C" && itStatus.indexOf("RNOR")>-1){
+      links.push(["Your RNOR window — and when it closes","Two to three years, then worldwide income is taxable. Here's what to crystallise first.","#"]);
+      links.push(["Your account map","NRE, NRO, FCNR and RFC — which converts when you come ashore.","#"]);
+    } else if(state.who==="B"){
+      links.push(["Investing back into India as an NRI","Mutual funds, the US/Canada AMC catch, PIS, repatriation and TDS.","#"]);
+      links.push(["US markets via Vested — your funding route","How the route changes with your residency status.","#"]);
+    } else if(femaProi){
+      links.push(["What this means for your salary","Why NRE-credited foreign-ship salary isn't taxable (Circular 13/2017).","#"]);
+      links.push(["Your account map","NRE, NRO and FCNR — which account for which money.","#"]);
+    } else {
+      links.push(["You're a full resident this year — what changes","Worldwide income, foreign-asset reporting, and the LRS route for investing abroad.","#"]);
+    }
+    var nl=document.getElementById("nextLinks"); nl.innerHTML="";
+    links.forEach(function(l){
+      var a=document.createElement("a"); a.href=l[2];
+      a.innerHTML='<span><span class="na">'+l[0]+'</span><span class="nd">'+l[1]+'</span></span><span class="go">›</span>';
+      nl.appendChild(a);
+    });
+
+    // gate copy per branch
+    var gh=document.getElementById("gateH"), gp=document.getElementById("gateP");
+    if(state.who==="C" && itStatus.indexOf("RNOR")>-1){
+      gh.textContent="Get your coming-ashore plan.";
+      gp.textContent="Enter your email and we'll send the RNOR window guide for seafarers — the moves to make, in order, before the window closes.";
+    } else {
+      gh.textContent="Want this as a plan, not just a status?";
+      gp.textContent="Enter your email and we'll send the NRI investing guide written for seafarers — the specific moves, in order, for your situation.";
+    }
+  }
+
+  // gate submit (prototype: confirmation only; wire to lead capture later)
+  document.getElementById("sendGuide").addEventListener("click",function(){
+    var em=document.getElementById("email").value.trim();
+    if(!/.+@.+\..+/.test(em)){ document.getElementById("email").focus(); return; }
+    document.getElementById("gateRow").innerHTML='<div style="color:var(--good);font-weight:500">Thanks — the guide is on its way to '+em+'.</div>';
+  });
+
+  // restart
+  document.getElementById("restart").addEventListener("click",function(){ location.reload(); });
+})();
+</script>
+</body>
+</html>
