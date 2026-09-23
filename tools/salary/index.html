@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Is My Salary Taxable in India? — Seafarer Salary Checker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --cream:#F6F2ED;--slate:#3A3D4A;--copper:#B87040;--copper-soft:#c98a5f;--dark:#24221E;
+    --bg:var(--cream);--surface:#fffdfa;--ink:#2b2925;--ink-soft:#6b675f;
+    --line:rgba(58,61,74,.16);--line-strong:rgba(58,61,74,.32);
+    --accent:var(--copper);--accent-ink:#7c4a24;
+    --good:#3f6b4f;--good-bg:rgba(63,107,79,.10);
+    --warn:#9a5b2a;--warn-bg:rgba(154,91,42,.10);
+    --stop:#8f3f34;--stop-bg:rgba(143,63,52,.10);
+    --shadow:0 1px 0 rgba(58,61,74,.06);
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    --sans:"Inter",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  :root:not([data-theme="light"]){@media (prefers-color-scheme: dark){
+    --bg:var(--dark);--surface:#2c2a25;--ink:#efe9df;--ink-soft:#b3ada1;
+    --line:rgba(246,242,237,.16);--line-strong:rgba(246,242,237,.30);
+    --accent:var(--copper-soft);--accent-ink:#e0a878;
+    --good:#7fb08f;--good-bg:rgba(127,176,143,.12);
+    --warn:#d89a5f;--warn-bg:rgba(216,154,95,.12);
+    --stop:#d98a7d;--stop-bg:rgba(217,138,125,.12);
+    --shadow:0 1px 0 rgba(0,0,0,.2);
+  }}
+  :root[data-theme="dark"]{
+    --bg:var(--dark);--surface:#2c2a25;--ink:#efe9df;--ink-soft:#b3ada1;
+    --line:rgba(246,242,237,.16);--line-strong:rgba(246,242,237,.30);
+    --accent:var(--copper-soft);--accent-ink:#e0a878;
+    --good:#7fb08f;--good-bg:rgba(127,176,143,.12);
+    --warn:#d89a5f;--warn-bg:rgba(216,154,95,.12);
+    --stop:#d98a7d;--stop-bg:rgba(217,138,125,.12);
+    --shadow:0 1px 0 rgba(0,0,0,.2);
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:clamp(20px,5vw,44px) clamp(18px,5vw,32px) 64px}
+
+  .mast{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:clamp(26px,6vw,48px)}
+  .tag{font-size:13px;color:var(--ink-soft)}
+  .theme-btn{border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:var(--sans);font-size:12.5px;padding:6px 11px;border-radius:999px;cursor:pointer}
+  .theme-btn:hover{border-color:var(--line-strong);color:var(--ink)}
+
+  .rail{display:flex;align-items:center;gap:8px;margin:0 0 26px;height:14px}
+  .rail .seg{height:2px;flex:1;background:var(--line);border-radius:2px;position:relative;overflow:hidden}
+  .rail .seg.done{background:var(--accent)}
+
+  .screen{display:none}
+  .screen.active{display:block;animation:rise .34s ease}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.screen.active{animation:none}}
+
+  .kicker{font-family:var(--sans);font-size:13px;color:var(--accent-ink);margin:0 0 12px;font-weight:500}
+  h1.q{font-family:var(--serif);font-weight:600;font-size:clamp(30px,7vw,46px);line-height:1.08;letter-spacing:.005em;margin:0 0 14px;color:var(--ink);max-width:17ch}
+  h2.q{font-family:var(--serif);font-weight:600;font-size:clamp(24px,5.4vw,34px);line-height:1.12;margin:0 0 14px;color:var(--ink)}
+  .lede{font-size:16.5px;color:var(--ink-soft);max-width:56ch;margin:0 0 26px;line-height:1.55}
+
+  .btn{font-family:var(--sans);font-size:15.5px;font-weight:500;cursor:pointer;border-radius:10px;padding:13px 22px;border:1px solid transparent;transition:background .15s,border-color .15s,color .15s}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn.primary:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+  :root[data-theme="dark"] .btn.primary,:root:not([data-theme="light"]) .btn.primary{color:#211f1b}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn.link{background:none;border:none;color:var(--accent-ink);padding:6px 0;font-size:14.5px;text-decoration:underline;text-underline-offset:3px}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:26px}
+
+  details.exp{border-top:1px solid var(--line);margin-top:18px;padding-top:14px}
+  details.exp summary{cursor:pointer;list-style:none;color:var(--accent-ink);font-size:14.5px;font-weight:500;display:flex;gap:8px;align-items:center}
+  details.exp summary::-webkit-details-marker{display:none}
+  details.exp summary .chev{transition:transform .2s;font-size:12px}
+  details.exp[open] summary .chev{transform:rotate(90deg)}
+  details.exp .body{margin-top:12px;color:var(--ink-soft);font-size:15px;line-height:1.6;max-width:58ch}
+  details.exp .body b{color:var(--ink)}
+
+  .opts{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+  .opt{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:16px 18px;cursor:pointer;display:block;width:100%;text-align:left;font-family:var(--sans);transition:border-color .15s,box-shadow .15s;box-shadow:var(--shadow)}
+  .opt:hover{border-color:var(--accent)}
+  .opt.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+  .opt .ot{font-size:16.5px;font-weight:600;color:var(--ink)}
+  .opt .os{font-size:14px;color:var(--ink-soft);margin-top:3px}
+  .unfold{overflow:hidden;max-height:0;transition:max-height .3s ease}
+  .opt.sel .unfold{max-height:320px}
+  .unfold .in{padding-top:12px;margin-top:12px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:14.5px;line-height:1.55}
+
+  .qblock{margin:26px 0}
+  .qblock .qh{font-size:16.5px;font-weight:600;color:var(--ink);margin-bottom:12px}
+  .qblock .qhint{font-size:13px;color:var(--ink-soft);margin:-6px 0 12px;line-height:1.5}
+
+  .result-line{margin-top:20px;padding:14px 18px;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0;font-size:15px;color:var(--ink-soft)}
+
+  .field{margin:18px 0}
+  input[type=email]{width:100%;font-family:var(--sans);font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:9px;padding:11px 13px}
+  input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+
+  /* Outcome */
+  .verdict-card{border-radius:16px;padding:22px 22px 20px;margin:6px 0 20px;border:1px solid var(--line-strong)}
+  .verdict-card.good{border-color:var(--good);background:var(--good-bg)}
+  .verdict-card.warn{border-color:var(--warn);background:var(--warn-bg)}
+  .verdict-card.stop{border-color:var(--stop);background:var(--stop-bg)}
+  .verdict-card .vh{font-family:var(--serif);font-weight:600;font-size:clamp(24px,5.5vw,32px);line-height:1.12;color:var(--ink)}
+  .quote{font-family:var(--serif);font-size:clamp(19px,4.4vw,24px);line-height:1.32;color:var(--ink);border-left:3px solid var(--accent);padding:4px 0 4px 18px;margin:0 0 22px}
+  .quote span{color:var(--accent-ink);font-style:italic}
+  .checks{list-style:none;padding:0;margin:0 0 22px}
+  .checks li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink)}
+  .checks li:last-child{border-bottom:none}
+  .checks .mk{color:var(--good);font-weight:600;flex:none}
+  .checks .mk.x{color:var(--stop)}
+  .checks .pv{color:var(--ink-soft);font-size:13px;display:block;margin-top:2px}
+  .fix{border:1px solid var(--warn);background:var(--warn-bg);border-radius:12px;padding:16px 18px;margin:0 0 22px}
+  .fix .fh{font-weight:600;color:var(--ink);margin-bottom:6px}
+  .fix p{margin:0;color:var(--ink-soft);font-size:14.5px;line-height:1.55}
+  .look{border:1px solid var(--warn);border-radius:12px;padding:16px 18px;margin:0 0 22px;background:var(--surface)}
+  .look p{margin:0;color:var(--ink-soft);font-size:15px;line-height:1.55}
+  .next{margin:0 0 22px}
+  .next .nh{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px}
+  .next a{display:flex;justify-content:space-between;align-items:center;gap:12px;text-decoration:none;border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin-bottom:9px;color:var(--ink);background:var(--surface);transition:border-color .15s}
+  .next a:hover{border-color:var(--accent)}
+  .next a .na{font-weight:600;font-size:15px}
+  .next a .nd{font-size:13px;color:var(--ink-soft);margin-top:2px}
+  .next a .go{color:var(--accent-ink);font-size:20px}
+  .gate{border:1px solid var(--accent);border-radius:14px;padding:20px;margin:0 0 20px;background:var(--surface)}
+  .gate .gh{font-family:var(--serif);font-size:21px;font-weight:600;color:var(--ink);margin-bottom:6px}
+  .gate p{margin:0 0 14px;color:var(--ink-soft);font-size:14.5px}
+  .gate .row{display:flex;gap:10px;flex-wrap:wrap}
+  .gate .row input{flex:1;min-width:180px}
+  .gate .np{font-size:12.5px;color:var(--ink-soft);margin-top:10px}
+  .talk{border-top:1px solid var(--line);padding-top:20px;margin-top:6px;color:var(--ink-soft);font-size:15px}
+  .talk .btn{margin-top:12px}
+  .disc{font-size:12.5px;color:var(--ink-soft);line-height:1.6;border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin:22px 0 0}
+  .disc b{color:var(--ink)}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;font-size:12.5px;color:var(--ink-soft);line-height:1.7}
+  .waterline{height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent);margin:0 0 12px}
+  @media(max-width:520px){.wrap{padding-bottom:56px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <span class="tag">Residency &amp; tax tools for merchant navy officers</span>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle light or dark">Dark</button>
+  </header>
+
+  <div class="rail" id="rail" aria-hidden="true">
+    <span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span>
+  </div>
+
+  <!-- SCREEN 0: ENTRY -->
+  <section class="screen active" id="s0">
+    <p class="kicker">Salary taxability checker</p>
+    <h1 class="q">Is your salary taxable in India?</h1>
+    <p class="lede">Your pay lands in an Indian NRE account — so is it caught by Indian tax? For most seafarers the answer is no, and there's a CBDT circular that says so. Let's check yours against the four things that actually decide it.</p>
+    <div class="actions"><button class="btn primary" data-go="s1">Check my salary</button></div>
+    <details class="exp">
+      <summary><span class="chev">▶</span> The myth we're about to clear up</summary>
+      <div class="body">A lot of officers believe money hitting an Indian bank account is "received in India" and therefore taxable. It isn't — the tax law taxes where your salary is <b>earned and first received</b>, not where it's later remitted. Crediting it to your NRE account is a transfer, not the taxing moment. <b>Circular 13/2017</b> says this in as many words. This tool confirms whether you're inside that protection.</div>
+    </details>
+  </section>
+
+  <!-- SCREEN 1: RESIDENCY GATE -->
+  <section class="screen" id="s1">
+    <p class="kicker">Step 1 of 4 · the gate</p>
+    <h2 class="q">For this tax year, are you a non-resident?</h2>
+    <p class="lede">The whole seafarer benefit runs through non-resident status — so this comes first.</p>
+    <div class="opts" id="resOpts">
+      <button class="opt" data-res="NR"><div class="ot">Yes — non-resident (NRI)</div><div class="os">Under 182 days in India, counted off your CDC.</div>
+        <div class="unfold"><div class="in">Good — then we can test whether your salary sits inside the Circular 13/2017 protection. On to where you did the work.</div></div></button>
+      <button class="opt" data-res="ROR"><div class="ot">No — resident</div><div class="os">182 days or more in India this year.</div>
+        <div class="unfold"><div class="in">Then there's no seafarer exception to find — a resident is taxed on worldwide salary at normal slab rates, ship or no ship. If you recently stopped sailing you might be RNOR, which is different — check the residency tool first.</div></div></button>
+      <button class="opt" data-res="unsure"><div class="ot">I'm not sure</div><div class="os">Haven't counted my days yet.</div>
+        <div class="unfold"><div class="in">Worth settling first — your salary's tax treatment depends entirely on it. Run the residency checker, then come back. For now, pick whichever is closer so we can show you the path.</div></div></button>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" data-back="s0">Back</button>
+      <button class="btn primary" id="s1next" disabled>Continue</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: WHERE WORK DONE -->
+  <section class="screen" id="s2">
+    <p class="kicker">Step 2 of 4 · where you worked</p>
+    <h2 class="q">Was your service performed outside India?</h2>
+    <div class="opts" id="svcOpts">
+      <button class="opt" data-svc="foreign_only"><div class="ot">Yes — foreign-going voyages</div><div class="os">International runs, outside Indian waters.</div>
+        <div class="unfold"><div class="in">That's the fact that matters most. For a non-resident, India can only tax what's received in India or earned in India (Section 5(2)). Work done on the high seas is neither.</div></div></button>
+      <button class="opt" data-svc="mixed_coastal"><div class="ot">Some coastal / Indian-waters stretches</div><div class="os">Part of the year on coastal trade.</div>
+        <div class="unfold"><div class="in">Then we treat the two periods separately. Time on coastal runs or inside Indian territorial waters counts as service <b>in</b> India, and that portion is taxable even for a non-resident (Section 9). Your foreign-going period stays out.</div></div></button>
+      <button class="opt" data-svc="unsure"><div class="ot">Not sure</div><div class="os">Mixed or unclear voyage pattern.</div>
+        <div class="unfold"><div class="in">No problem — where the work was performed decides everything here, so this is worth pinning down with your voyage record. We'll flag it for a closer look.</div></div></button>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" data-back="s1">Back</button>
+      <button class="btn primary" id="s2next" disabled>Continue</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: SHIP + EMPLOYER -->
+  <section class="screen" id="s3">
+    <p class="kicker">Step 3 of 4 · the ship &amp; the employer</p>
+    <h2 class="q">The vessel and who pays you</h2>
+    <p class="lede">These are two separate facts — you can work for an Indian company on a foreign-flag ship, or the other way round.</p>
+
+    <div class="qblock">
+      <div class="qh">Was the ship foreign-flagged?</div>
+      <div class="opts" id="flagOpts">
+        <button class="opt" data-flag="foreign"><div class="ot">Yes — foreign flag</div></button>
+        <button class="opt" data-flag="indian"><div class="ot">No — Indian flag</div></button>
+        <button class="opt" data-flag="unsure"><div class="ot">Not sure</div></button>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qh">Who employs you?</div>
+      <div class="opts" id="empOpts">
+        <button class="opt" data-emp="foreign"><div class="ot">A foreign company</div></button>
+        <button class="opt" data-emp="indian_ifsc"><div class="ot">An Indian company with an IFSC / GIFT-City address</div></button>
+        <button class="opt" data-emp="indian"><div class="ot">An Indian company</div></button>
+      </div>
+      <div class="result-line" id="s3note" style="display:none"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn ghost" data-back="s2">Back</button>
+      <button class="btn primary" id="s3next" disabled>Continue</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 4: CREDITED WHERE -->
+  <section class="screen" id="s4">
+    <p class="kicker">Step 4 of 4 · where it's credited</p>
+    <h2 class="q">Which account does your salary land in?</h2>
+    <div class="opts" id="acctOpts">
+      <button class="opt" data-acct="NRE"><div class="ot">NRE account</div><div class="os">Non-Resident External.</div>
+        <div class="unfold"><div class="in">The right account. Crediting to your NRE account is exactly the fact Circular 13/2017 protects — the remittance doesn't make it "received in India."</div></div></button>
+      <button class="opt" data-acct="NRO"><div class="ot">NRO account</div><div class="os">Non-Resident Ordinary.</div>
+        <div class="unfold"><div class="in">Worth fixing. NRO is for your India-source income — rent, Indian interest, capital gains. Routing foreign-ship salary through it muddies the clean position and can invite the "received in India" argument the NRE route avoids.</div></div></button>
+      <button class="opt" data-acct="resident_savings"><div class="ot">A resident savings account</div><div class="os">A regular domestic account.</div>
+        <div class="unfold"><div class="in">This should be corrected. A still-open resident savings account for foreign-ship salary weakens your position — foreign salary should land in an NRE account while you're non-resident.</div></div></button>
+      <button class="opt" data-acct="foreign"><div class="ot">A foreign account</div><div class="os">Held outside India.</div>
+        <div class="unfold"><div class="in">Cleanly outside India — foreign service, foreign account, non-resident. Nothing to bring it into the Indian net.</div></div></button>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" data-back="s3">Back</button>
+      <button class="btn primary" id="s4next" disabled>See my answer</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 5: OUTCOME -->
+  <section class="screen" id="s5">
+    <p class="kicker">Your answer</p>
+    <div class="verdict-card" id="verdictCard"><div class="vh" id="verdictH">—</div></div>
+    <div class="quote" id="quoteBox" style="display:none"></div>
+    <ul class="checks" id="checksList"></ul>
+    <div class="fix" id="fixBox" style="display:none"><div class="fh">Move your salary credit to your NRE account.</div><p>Your NRO / resident account is for India-source income — rent, Indian interest, capital gains. Keeping the two apart is what makes your position clean and easy to defend.</p></div>
+    <div class="look" id="lookBox" style="display:none"><p id="lookText"></p></div>
+    <div class="next"><div class="nh">Your next step</div><div id="nextLinks"></div></div>
+    <div class="gate">
+      <div class="gh">Want the full picture in writing?</div>
+      <p>We'll send the seafarer's salary-and-tax guide — the four conditions, the NRE-vs-NRO point, and how to keep your records assessment-proof.</p>
+      <div class="row" id="gateRow"><input type="email" id="email" placeholder="you@email.com" aria-label="Your email"><button class="btn primary" id="sendGuide">Send the guide</button></div>
+      <div class="np">No spam, just the guide.</div>
+    </div>
+    <div class="talk" id="talkBox">Rather talk it through? A 20-minute call — your contract, your voyages, the paperwork that keeps your position clean. No obligation.
+      <div><button class="btn ghost">Book a call</button></div>
+    </div>
+    <div class="disc">
+      <b>An educational estimate</b> based on the facts you enter and the position under Section 5, Section 9 and CBDT Circular 13/2017. Seafarer salary taxation turns on your specific contract, voyage record and residency, and edge cases — Indian-flag vessels, mixed coastal service, deemed residency — need individual review. It is not tax advice; confirm your position with a qualified professional before you file.
+    </div>
+    <div class="actions">
+      <button class="btn ghost" data-back="s4">Back</button>
+      <button class="btn link" id="restart">Start over</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="waterline"></div>
+    <div>An educational tool for merchant navy officers. This is not tax, legal or investment advice. Seafarer salary taxation depends on your specific contract, voyage record and residency — confirm your position with a qualified professional before you file.</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var state={res:null,svc:null,flag:null,emp:null,acct:null};
+  var screens=["s0","s1","s2","s3","s4","s5"];
+
+  function show(id){
+    screens.forEach(function(s){document.getElementById(s).classList.toggle("active",s===id);});
+    var idx=screens.indexOf(id),segs=document.querySelectorAll("#rail .seg");
+    var filled = id==="s5"?4:Math.max(0,idx);
+    for(var i=0;i<4;i++){segs[i].classList.toggle("done",i<filled);}
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.body.addEventListener("click",function(e){
+    var g=e.target.closest("[data-go]"),b=e.target.closest("[data-back]");
+    if(g) show(g.getAttribute("data-go"));
+    if(b) show(b.getAttribute("data-back"));
+  });
+
+  // theme
+  var tb=document.getElementById("themeBtn");
+  tb.addEventListener("click",function(){
+    var cur=document.documentElement.getAttribute("data-theme");
+    var next=cur==="dark"?"light":"dark";
+    document.documentElement.setAttribute("data-theme",next);
+    tb.textContent=next==="dark"?"Light":"Dark";
+    try{localStorage.setItem("seafarer-theme",next);}catch(e){}
+  });
+  try{var sv=localStorage.getItem("seafarer-theme");if(sv){document.documentElement.setAttribute("data-theme",sv);tb.textContent=sv==="dark"?"Light":"Dark";}}catch(e){}
+
+  // generic single-select in an .opts group
+  function wireSelect(groupId, key, attr, nextBtnId, onPick){
+    document.getElementById(groupId).addEventListener("click",function(e){
+      var o=e.target.closest(".opt"); if(!o) return;
+      this.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel");});
+      o.classList.add("sel");
+      state[key]=o.getAttribute(attr);
+      if(nextBtnId) document.getElementById(nextBtnId).disabled=false;
+      if(onPick) onPick(state[key]);
+    });
+  }
+  wireSelect("resOpts","res","data-res","s1next");
+  wireSelect("svcOpts","svc","data-svc","s2next");
+  wireSelect("acctOpts","acct","data-acct","s4next");
+  wireSelect("flagOpts","flag","data-flag",null,checkStep3);
+  wireSelect("empOpts","emp","data-emp",null,checkStep3);
+
+  function checkStep3(){
+    if(state.flag && state.emp){ document.getElementById("s3next").disabled=false; }
+    var note=document.getElementById("s3note");
+    if(state.emp==="indian_ifsc"){
+      note.style.display="block";
+      note.innerHTML="An employer being Indian-incorporated, even at a GIFT-City / IFSC address, does <b style='color:var(--ink)'>not</b> by itself make your salary taxable. What matters is your non-resident status and that the work was done abroad.";
+    } else if(state.flag==="indian" || state.emp==="indian"){
+      note.style.display="block";
+      note.innerHTML="An Indian-flag vessel or Indian employer doesn't automatically break the exemption — but it doesn't automatically keep it either. We'll flag this for a proper look.";
+    } else { note.style.display="none"; }
+  }
+
+  // step navigation with logic
+  document.getElementById("s1next").addEventListener("click",function(){
+    if(state.res==="ROR"){ compute(); show("s5"); } else { show("s2"); }
+  });
+  document.getElementById("s2next").addEventListener("click",function(){ show("s3"); });
+  document.getElementById("s3next").addEventListener("click",function(){ show("s4"); });
+  document.getElementById("s4next").addEventListener("click",function(){ compute(); show("s5"); });
+
+  // ---- decision tree ----
+  function compute(){
+    var res=state.res, svc=state.svc, flag=state.flag, emp=state.emp, acct=state.acct;
+    var verdict, reason=[], hasCoastal=false;
+
+    if(res==="ROR"){
+      verdict="TAXABLE";
+      reason.push(["x","You're a resident this year — worldwide salary is taxable at slab rates. There's no seafarer-specific exemption.","Section 5(1)"]);
+      return render(verdict,reason,hasCoastal);
+    }
+
+    // NR (or unsure treated as NR path but flagged)
+    reason.push(["ok","Non-resident this year","your residency check"]);
+    if(res==="unsure") reason.push(["x","You weren't sure of your residency — settle that first, because everything here depends on it.","Section 6"]);
+
+    if(svc==="unsure"){ verdict="NEEDS_LOOK";
+      reason.push(["x","Where your service was performed isn't clear — and that's the fact that decides it.","Section 9"]);
+      return render(verdict,reason,hasCoastal);
+    }
+    if(svc==="mixed_coastal"){ hasCoastal=true;
+      reason.push(["ok","Foreign-going service is outside India's net; your coastal / Indian-waters portion is taxable","Section 5(2), Section 9"]);
+    } else {
+      reason.push(["ok","Service rendered outside India, foreign-going","Section 5(2), Section 9"]);
+    }
+
+    // grey area: Indian flag or Indian (non-IFSC) employer
+    if(flag==="indian" || emp==="indian" || flag==="unsure"){
+      verdict="NEEDS_LOOK";
+      if(flag==="unsure") reason.push(["x","The ship's flag isn't confirmed — worth checking, as an Indian-flag vessel changes the analysis.",""]);
+      else reason.push(["x","An Indian-flag vessel or Indian employer is a genuine grey area — it turns on your contract and voyage pattern.",""]);
+      return render(verdict,reason,hasCoastal);
+    }
+    // foreign flag confirmed
+    reason.push(["ok","Foreign-flag ship",""]);
+    if(emp==="indian_ifsc") reason.push(["ok","IFSC / GIFT-City employer — not decisive on its own",""]);
+
+    // account
+    if(acct==="NRE"){ verdict=hasCoastal?"SPLIT":"NOT_TAXABLE"; reason.push(["ok","Credited to your NRE account","Circular 13/2017"]); }
+    else if(acct==="foreign"){ verdict=hasCoastal?"SPLIT":"NOT_TAXABLE"; reason.push(["ok","Credited to a foreign account — cleanly outside India",""]); }
+    else { verdict=hasCoastal?"SPLIT_FIX":"NOT_TAXABLE_BUT_FIX"; reason.push(["x","Credited to an NRO / resident account — foreign salary should route to NRE","Circular 13/2017"]); }
+
+    render(verdict,reason,hasCoastal);
+  }
+
+  function render(verdict,reason,hasCoastal){
+    var card=document.getElementById("verdictCard"), h=document.getElementById("verdictH");
+    var quote=document.getElementById("quoteBox"), fix=document.getElementById("fixBox"), look=document.getElementById("lookBox"), talk=document.getElementById("talkBox");
+    card.className="verdict-card"; quote.style.display="none"; fix.style.display="none"; look.style.display="none";
+
+    var headline, tone, showQuote=false, showFix=false, showLook=false, routeHuman=false;
+    switch(verdict){
+      case "NOT_TAXABLE": headline="Your ship salary is not taxable in India this year."; tone="good"; showQuote=true; break;
+      case "NOT_TAXABLE_BUT_FIX": headline="Not taxable — but one thing to fix."; tone="warn"; showQuote=true; showFix=true; break;
+      case "SPLIT": headline="Mostly not taxable — with one taxable slice."; tone="warn"; showQuote=true; break;
+      case "SPLIT_FIX": headline="Mostly not taxable — one taxable slice, and one thing to fix."; tone="warn"; showQuote=true; showFix=true; break;
+      case "TAXABLE": headline="Taxable this year — here's why."; tone="stop"; break;
+      case "NEEDS_LOOK": headline="This one needs a proper look."; tone="warn"; showLook=true; routeHuman=true; break;
+    }
+    card.classList.add(tone); h.textContent=headline;
+
+    if(showQuote){ quote.style.display="block";
+      quote.innerHTML='Because you\u2019re a non-resident who rendered service abroad on a foreign-going ship, your salary <span>\u201cshall not be included in total income merely because it has been credited to the NRE account maintained with an Indian bank\u201d</span> — the words of CBDT Circular 13/2017. The money landing in India didn\u2019t make it Indian income.';
+    }
+    if(showFix) fix.style.display="block";
+    if(showLook){ look.style.display="block";
+      document.getElementById("lookText").textContent="Your situation has a fact the tax code treats carefully — an Indian-flag vessel, an Indian employer, an unclear voyage pattern, or coastal service. That doesn't mean you owe tax; it means the answer turns on your specific contract and voyage record, and it's worth twenty minutes with someone who reads these for a living.";
+    }
+
+    // reasoning checklist
+    var ul=document.getElementById("checksList"); ul.innerHTML="";
+    reason.forEach(function(r){
+      var li=document.createElement("li");
+      var prov = r[2] ? '<span class="pv">'+r[2]+'</span>' : '';
+      li.innerHTML='<span class="mk'+(r[0]==="x"?" x":"")+'">'+(r[0]==="x"?"\u25CB":"\u2713")+'</span><span>'+r[1]+prov+'</span>';
+      ul.appendChild(li);
+    });
+
+    // reorder: put call above gate for NEEDS_LOOK
+    var gate=document.querySelector(".gate");
+    if(routeHuman){ talk.parentNode.insertBefore(talk, gate); } 
+
+    // next links
+    var links=[];
+    if(verdict==="TAXABLE"){
+      links.push(["You're a resident this year — what changes","Worldwide income, and how to deploy a lump sum tax-efficiently.","#"]);
+      links.push(["Check your residency","If you recently came ashore you may be RNOR, which is treated differently.","#"]);
+    } else if(verdict==="NEEDS_LOOK"){
+      links.push(["Your account map","NRE, NRO and FCNR — which account for which money.","#"]);
+      links.push(["Check your residency","Confirm your status before we settle the salary question.","#"]);
+    } else {
+      links.push(["Your account map","NRE, NRO and FCNR — keep foreign salary and India income apart.","#"]);
+      links.push(["Check your residency","See your NRI / RNOR status and when it changes.","#"]);
+    }
+    var nl=document.getElementById("nextLinks"); nl.innerHTML="";
+    links.forEach(function(l){var a=document.createElement("a");a.href=l[2];
+      a.innerHTML='<span><span class="na">'+l[0]+'</span><span class="nd">'+l[1]+'</span></span><span class="go">\u203A</span>';nl.appendChild(a);});
+  }
+
+  document.getElementById("sendGuide").addEventListener("click",function(){
+    var em=document.getElementById("email").value.trim();
+    if(!/.+@.+\..+/.test(em)){document.getElementById("email").focus();return;}
+    document.getElementById("gateRow").innerHTML='<div style="color:var(--good);font-weight:500">Thanks — the guide is on its way to '+em+'.</div>';
+  });
+  document.getElementById("restart").addEventListener("click",function(){location.reload();});
+})();
+</script>
+</body>
+</html>
