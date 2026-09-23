@@ -439,14 +439,14 @@
     // next links
     var links=[];
     if(verdict==="TAXABLE"){
-      links.push(["You're a resident this year — what changes","Worldwide income, and how to deploy a lump sum tax-efficiently.","#"]);
-      links.push(["Check your residency","If you recently came ashore you may be RNOR, which is treated differently.","#"]);
+      links.push(["You're a resident this year — what changes","Worldwide income, and how to deploy a lump sum tax-efficiently.","/tools"]);
+      links.push(["Check your residency","If you recently came ashore you may be RNOR, which is treated differently.","/tools/residency"]);
     } else if(verdict==="NEEDS_LOOK"){
-      links.push(["Your account map","NRE, NRO and FCNR — which account for which money.","#"]);
-      links.push(["Check your residency","Confirm your status before we settle the salary question.","#"]);
+      links.push(["Your account map","NRE, NRO and FCNR — which account for which money.","/tools"]);
+      links.push(["Check your residency","Confirm your status before we settle the salary question.","/tools/residency"]);
     } else {
-      links.push(["Your account map","NRE, NRO and FCNR — keep foreign salary and India income apart.","#"]);
-      links.push(["Check your residency","See your NRI / RNOR status and when it changes.","#"]);
+      links.push(["Your account map","NRE, NRO and FCNR — keep foreign salary and India income apart.","/tools"]);
+      links.push(["Check your residency","See your NRI / RNOR status and when it changes.","/tools/residency"]);
     }
     var nl=document.getElementById("nextLinks"); nl.innerHTML="";
     links.forEach(function(l){var a=document.createElement("a");a.href=l[2];

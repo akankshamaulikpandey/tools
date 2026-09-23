@@ -656,16 +656,16 @@
     // next links per branch + status
     var links=[];
     if(state.who==="C" && itStatus.indexOf("RNOR")>-1){
-      links.push(["Your RNOR window — and when it closes","Two to three years, then worldwide income is taxable. Here's what to crystallise first.","#"]);
-      links.push(["Your account map","NRE, NRO, FCNR and RFC — which converts when you come ashore.","#"]);
+      links.push(["Your RNOR window — and when it closes","Two to three years, then worldwide income is taxable. Here's what to crystallise first.","/tools"]);
+      links.push(["Your account map","NRE, NRO, FCNR and RFC — which converts when you come ashore.","/tools"]);
     } else if(state.who==="B"){
-      links.push(["Investing back into India as an NRI","Mutual funds, the US/Canada AMC catch, PIS, repatriation and TDS.","#"]);
-      links.push(["US markets via Vested — your funding route","How the route changes with your residency status.","#"]);
+      links.push(["Investing back into India as an NRI","Mutual funds, the US/Canada AMC catch, PIS, repatriation and TDS.","/tools"]);
+      links.push(["US markets via Vested — your funding route","How the route changes with your residency status.","/tools"]);
     } else if(femaProi){
-      links.push(["What this means for your salary","Why NRE-credited foreign-ship salary isn't taxable (Circular 13/2017).","#"]);
-      links.push(["Your account map","NRE, NRO and FCNR — which account for which money.","#"]);
+      links.push(["What this means for your salary","Why NRE-credited foreign-ship salary isn't taxable (Circular 13/2017).","/tools/salary"]);
+      links.push(["Your account map","NRE, NRO and FCNR — which account for which money.","/tools"]);
     } else {
-      links.push(["You're a full resident this year — what changes","Worldwide income, foreign-asset reporting, and the LRS route for investing abroad.","#"]);
+      links.push(["You're a full resident this year — what changes","Worldwide income, foreign-asset reporting, and the LRS route for investing abroad.","/tools"]);
     }
     var nl=document.getElementById("nextLinks"); nl.innerHTML="";
     links.forEach(function(l){
