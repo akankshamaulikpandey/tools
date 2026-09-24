@@ -471,6 +471,14 @@
 <script>
 (function(){
   "use strict";
+  /* ===== LEAD CAPTURE (Web3Forms) ===== */
+  var WEB3FORMS_KEY = "ca69e7b2-110e-4c74-8c21-6a1a614285cf";
+  function captureLead(email, source, detail){
+    try{ fetch("https://api.web3forms.com/submit",{method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify({access_key:WEB3FORMS_KEY,subject:"New tools lead - "+source,from_name:"Seafarer Tools",email:email,source:source,detail:detail||"",submitted:new Date().toISOString()})}); }catch(e){}
+  }
+  /* ==================================== */
   var state = {
     who:null, mode:"voyages",
     voyages:[], otherOut:0, totalDays:null,
@@ -697,7 +705,7 @@
     // next links per branch + status
     var links=[];
     if(state.who==="C" && itStatus.indexOf("RNOR")>-1){
-      links.push(["Your RNOR window — and when it closes","Two to three years, then worldwide income is taxable. Here's what to crystallise first.","/tools"]);
+      links.push(["Your RNOR window — and when it closes","Two to three years, then worldwide income is taxable. Here's what to crystallise first.","/tools/rnor-window"]);
       links.push(["Your account map","NRE, NRO, FCNR and RFC — which converts when you come ashore.","/tools"]);
     } else if(state.who==="B"){
       links.push(["Investing back into India as an NRI","Mutual funds, the US/Canada AMC catch, PIS, repatriation and TDS.","/tools"]);
@@ -787,6 +795,7 @@
   document.getElementById("sendGuide").addEventListener("click",function(){
     var em=document.getElementById("email").value.trim();
     if(!/.+@.+\..+/.test(em)){ document.getElementById("email").focus(); return; }
+    captureLead(em,"residency", (typeof curQ!=="undefined"&&curQ)?curQ:"");
     document.getElementById("gateRow").innerHTML='<div style="color:var(--good);font-weight:500">Thanks — the guide is on its way to '+em+'.</div>';
   });
 

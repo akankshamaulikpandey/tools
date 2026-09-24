@@ -291,6 +291,15 @@
 <script>
 (function(){
   "use strict";
+  /* ===== LEAD CAPTURE (Web3Forms) ===== */
+  var WEB3FORMS_KEY = "ca69e7b2-110e-4c74-8c21-6a1a614285cf";
+  function captureLead(email, source, detail){
+    try{ fetch("https://api.web3forms.com/submit",{method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify({access_key:WEB3FORMS_KEY,subject:"New tools lead - "+source,from_name:"Seafarer Tools",email:email,source:source,detail:detail||"",submitted:new Date().toISOString()})}); }catch(e){}
+  }
+  /* ==================================== */
+  var lastVerdict="";
   var state={res:null,svc:null,flag:null,emp:null,acct:null};
   var screens=["s0","s1","s2","s3","s4","s5"];
 
@@ -400,6 +409,7 @@
   }
 
   function render(verdict,reason,hasCoastal){
+    lastVerdict=verdict||"";
     var card=document.getElementById("verdictCard"), h=document.getElementById("verdictH");
     var quote=document.getElementById("quoteBox"), fix=document.getElementById("fixBox"), look=document.getElementById("lookBox"), talk=document.getElementById("talkBox");
     card.className="verdict-card"; quote.style.display="none"; fix.style.display="none"; look.style.display="none";
@@ -456,6 +466,7 @@
   document.getElementById("sendGuide").addEventListener("click",function(){
     var em=document.getElementById("email").value.trim();
     if(!/.+@.+\..+/.test(em)){document.getElementById("email").focus();return;}
+    captureLead(em,"salary",lastVerdict);
     document.getElementById("gateRow").innerHTML='<div style="color:var(--good);font-weight:500">Thanks — the guide is on its way to '+em+'.</div>';
   });
   document.getElementById("restart").addEventListener("click",function(){location.reload();});
