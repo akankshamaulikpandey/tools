@@ -181,9 +181,40 @@
   .vcard .vval{font-family:var(--serif);font-weight:600;font-size:clamp(22px,5vw,29px);line-height:1.1;color:var(--ink)}
   .vcard.hl{border-color:var(--accent);background:var(--surface)}
   .vcard .vval em{font-style:normal;color:var(--accent-ink)}
-  .diverge{border:1px solid var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);border-radius:14px;padding:18px 20px;margin:0 0 22px}
-  .diverge .dh{font-family:var(--serif);font-size:21px;font-weight:600;color:var(--ink);margin-bottom:6px}
-  .diverge p{margin:0;color:var(--ink-soft);font-size:15px;line-height:1.55}
+  .qmap-wrap{margin:4px 0 24px}
+  .qmap-cap{font-size:13.5px;color:var(--ink-soft);margin:0 0 16px;line-height:1.5;max-width:54ch}
+  .qmap-cap b{color:var(--ink);font-weight:600}
+  .qgrid{display:grid;grid-template-columns:auto 1fr 1fr;gap:10px;align-items:stretch}
+  .qcorner{display:flex;flex-direction:column;justify-content:flex-end;gap:1px;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);opacity:.65;padding-bottom:7px;text-align:right}
+  .qpole{font-size:12.5px;color:var(--ink-soft);font-weight:500;text-align:center;display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px}
+  .qrl{font-size:12.5px;color:var(--ink-soft);font-weight:500;display:flex;align-items:center;justify-content:flex-end;text-align:right;padding-right:4px;min-width:58px}
+  .qcell{position:relative;overflow:hidden;border:1.5px solid var(--line);background:var(--surface);border-radius:15px;padding:16px 16px 15px;cursor:pointer;text-align:left;font-family:var(--sans);min-height:120px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px;opacity:.6;transition:transform .18s ease,border-color .18s,background .18s,box-shadow .18s,opacity .18s}
+  .qcell:hover{opacity:1;border-color:var(--accent)}
+  .qnum{position:absolute;top:-8px;right:8px;font-family:var(--serif);font-weight:600;font-size:66px;line-height:1;color:var(--line-strong);opacity:.45;pointer-events:none;transition:color .18s,opacity .18s}
+  .qname{font-size:16px;font-weight:600;color:var(--ink);line-height:1.16;position:relative;z-index:1}
+  .qtag{font-size:12.5px;color:var(--ink-soft);line-height:1.3;position:relative;z-index:1}
+  .qhere{display:none}
+  .t-good{--tone:var(--good)} .t-warn{--tone:var(--warn)} .t-accent{--tone:var(--accent)} .t-neutral{--tone:var(--ink-soft)}
+  .qcell.active{opacity:1;border-color:var(--tone);border-width:2px;background:color-mix(in srgb,var(--tone) 12%,var(--surface));box-shadow:0 10px 26px -12px color-mix(in srgb,var(--tone) 65%,transparent);transform:translateY(-2px)}
+  .qcell.active .qnum{color:var(--tone);opacity:.92}
+  .qcell.active .qtag{color:var(--ink)}
+  .qcell.active .qhere{display:inline-flex;align-items:center;gap:7px;position:absolute;top:12px;left:16px;z-index:2;font-size:11px;font-weight:600;letter-spacing:.02em;color:#fff;background:var(--tone);padding:4px 11px 4px 9px;border-radius:999px}
+  .qcell.active .qhere::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.9s ease-out infinite}
+  :root[data-theme="dark"] .qcell.active .qhere,:root:not([data-theme="light"]) .qcell.active .qhere{color:#211f1b}
+  :root[data-theme="dark"] .qcell.active .qhere::before,:root:not([data-theme="light"]) .qcell.active .qhere::before{background:#211f1b}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--tone) 55%,transparent)}70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  .qcell.landing{animation:land .44s cubic-bezier(.2,.7,.3,1)}
+  @keyframes land{0%{transform:scale(.92);opacity:0}60%{transform:scale(1.03) translateY(-3px)}100%{transform:translateY(-2px);opacity:1}}
+  .qcell.sel:not(.active){opacity:1;border-color:var(--accent-ink)}
+  .qteach{margin:18px 0 0;padding:15px 17px;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 11px 11px 0;font-size:14.5px;color:var(--ink-soft);line-height:1.55}
+  .qteach b{color:var(--ink)}
+  .qtoggle{margin:14px 0 0;border:1px solid var(--line-strong);background:transparent;color:var(--accent-ink);font-family:var(--sans);font-size:14px;font-weight:500;padding:11px 16px;border-radius:9px;cursor:pointer;width:100%;text-align:left}
+  .qtoggle:hover{border-color:var(--accent)}
+  .qdetail{margin:12px 0 0;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:14.5px;color:var(--ink-soft);line-height:1.6}
+  .qdetail .qdh{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);margin-bottom:8px}
+  .qdetail b{color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){.qcell.landing{animation:none}.qcell.active .qhere::before{animation:none}}
+  @media(max-width:520px){.qcell{min-height:106px;padding:13px}.qname{font-size:14.5px}.qnum{font-size:54px}.qrl{min-width:0;font-size:11px}.qcorner{font-size:8.5px}}
   .reason{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 22px;background:var(--surface)}
   .reason .rh{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px}
   .reason ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;line-height:1.6}
@@ -376,9 +407,22 @@
       <div class="vcard"><div class="vlab">For FEMA — banking &amp; investing</div><div class="vval" id="femaVal">—</div></div>
     </div>
 
-    <div class="diverge" id="divergeBox" style="display:none">
-      <div class="dh">These two don't match this year — and that's the trap.</div>
-      <p id="divergeText"></p>
+    <div class="qmap-wrap" id="mapWrap">
+      <div class="qmap-cap">Two statuses, one square on the map — <b>your bank</b> down the side, <b>the taxman</b> across the top. Tap any square to read it.</div>
+      <div class="qgrid">
+        <div class="qcorner"><span>bank&nbsp;↓</span><span>tax&nbsp;→</span></div>
+        <div class="qpole">Non-resident</div>
+        <div class="qpole">Resident</div>
+        <div class="qrl">NRI</div>
+        <button class="qcell" data-cell="tl" type="button"></button>
+        <button class="qcell" data-cell="tr" type="button"></button>
+        <div class="qrl">Resident</div>
+        <button class="qcell" data-cell="bl" type="button"></button>
+        <button class="qcell" data-cell="br" type="button"></button>
+      </div>
+      <div class="qteach" id="qteach"></div>
+      <button class="qtoggle" id="qtoggle">What each of these means ›</button>
+      <div class="qdetail" id="qdetail" style="display:none"></div>
     </div>
 
     <div class="reason">
@@ -640,14 +684,11 @@
     document.getElementById("itVal").innerHTML = "<em>"+itShort+"</em>";
     document.getElementById("femaVal").textContent = femaProi?"NRI (resident outside India)":"Resident in India";
 
-    // diverge
-    var db=document.getElementById("divergeBox");
-    if(diverge){
-      db.style.display="block";
-      document.getElementById("divergeText").textContent = femaProi
-        ? "Your bank still treats you as an NRI — so your NRE account is fine — but for income tax you've tipped into resident this year. That changes what's taxable and what you must report. This is exactly the situation to get a second pair of eyes on before you file."
-        : "For income tax you're a non-resident, but under FEMA you're now resident in India — so your NRE/NRO accounts need redesignating even though your tax status hasn't caught up. Worth sorting before it becomes a compliance issue.";
-    } else db.style.display="none";
+    // 2x2 quadrant map
+    var q;
+    if(femaProi){ q = (itStatus.indexOf("Non-Resident")>-1) ? "Q1" : "Q2"; }
+    else { q = (itStatus.indexOf("RNOR")>-1) ? "Q3" : (itStatus.indexOf("Non-Resident")>-1 ? "EDGE" : "Q4"); }
+    buildMap(q);
 
     // reasoning
     var ol=document.getElementById("reasonList"); ol.innerHTML="";
@@ -684,6 +725,63 @@
       gp.textContent="Enter your email and we'll send the NRI investing guide written for seafarers — the specific moves, in order, for your situation.";
     }
   }
+
+  // --- 2x2 map data & wiring ---
+  var curQ=null, curQCell=null, qDetailOpen=false;
+  var QCELL={Q1:'tl',Q2:'tr',Q3:'br',Q4:'br',EDGE:'bl'};
+  var TEACH={
+    Q1:'Your bank and the taxman agree this year — both read you as a non-resident. The clean baseline.',
+    Q2:'<b>Notice the two disagree.</b> Your bank still sees an NRI; the taxman now sees a resident. That\u2019s the classic seafarer trap — act on one and forget the other, and the mistake is a wrong filing.',
+    Q3:'<b>This is the valuable one.</b> Your bank has flipped to resident, but the taxman still gives you the RNOR window — a two-to-three-year gap where foreign income stays out and RFC interest is tax-free. It closes on a date worth planning around.',
+    Q4:'Your bank and the taxman agree — both read you as a full resident. Worldwide income is in scope now.',
+    EDGE:'<b>The two disagree, the other way.</b> You\u2019ve settled, so your bank sees a resident — but your day-count still reads non-resident for tax this year. Redesignate your accounts now; the tax side catches up next year.'
+  };
+  var DETAIL={
+    Q1:{h:'Q1 — NRI for both',b:'<b>Accounts:</b> NRE, NRO, FCNR all valid; NRE interest tax-free (Section 10(4)(ii)). <b>Tax:</b> foreign-ship salary is outside India\u2019s net; only India-source income is taxed. <b>Invest:</b> as an NRI. The clean baseline.'},
+    Q2:{h:'Q2 — NRI for your bank, resident for the taxman',b:'Your bank still sees an NRI, so your NRE account and its tax-free interest stand — Section 10(4)(ii) tracks your FEMA status, which hasn\u2019t changed. But income tax says resident this year: if ROR, worldwide income becomes taxable and foreign assets reportable; if RNOR, foreign income is still shielded. <b>The danger is filing as though you were still non-resident.</b>'},
+    Q3:{h:'Q3 — Resident for your bank, RNOR for the taxman',b:'FEMA flipped to resident the day you landed, so your NRE/NRO accounts must redesignate (the NRE interest exemption ends) and an <b>RFC account</b> can hold your foreign currency — and RFC interest is tax-free precisely because you\u2019re RNOR. Foreign income stays out of Indian tax for the two-to-three-year window. <b>Time the accounts against the RNOR clock and you keep years of tax-free foreign-currency interest.</b>'},
+    Q4:{h:'Q4 — Resident for both',b:'<b>Accounts:</b> resident (and RFC, now with taxable interest). <b>Tax:</b> worldwide income taxable, foreign assets reportable (Schedule FA). <b>Invest:</b> abroad via LRS (USD 250,000/year). The steady resident state.'},
+    EDGE:{h:'Just came ashore — resident bank, non-resident tax',b:'You\u2019ve settled, so under FEMA you\u2019re resident and your accounts should redesignate now. But your day-count this year still makes you non-resident for tax — you\u2019ll most likely be RNOR next year. Sort the accounts; the tax side will catch up.'},
+    BR:{h:'Resident for both — coming ashore, or fully home',b:'Just come ashore? You\u2019re likely <b>RNOR</b> (Q3): accounts redesignate, but foreign income stays out for two to three years and RFC interest is tax-free — the coming-ashore window. Once that passes you\u2019re <b>ROR</b> (Q4): worldwide income taxable, invest abroad via LRS.'}
+  };
+  function buildMap(q){
+    curQ=q; curQCell=QCELL[q];
+    var labels={
+      tl:['1','NRI for both','The clean baseline'],
+      tr:['2','NRI bank, resident tax','The trap'],
+      bl:['','Just came ashore','Settled, few days yet'],
+      br:['3\u00b74','Resident for both','Coming ashore, or home']
+    };
+    if(q==='Q3') labels.br=['3','Coming-ashore window','The opportunity'];
+    if(q==='Q4') labels.br=['4','Resident for both','Fully home'];
+    var TONE={Q1:'t-good',Q2:'t-warn',Q3:'t-accent',Q4:'t-neutral',EDGE:'t-warn'};
+    document.querySelectorAll('.qcell').forEach(function(c){
+      var cell=c.getAttribute('data-cell'), L=labels[cell];
+      c.className='qcell';
+      c.innerHTML='<span class="qhere">You\u2019re here</span><span class="qnum">'+L[0]+'</span><span class="qname">'+L[1]+'</span><span class="qtag">'+L[2]+'</span>';
+      if(cell===curQCell){ c.classList.add('active'); c.classList.add(TONE[q]); c.classList.add('landing'); }
+    });
+    document.getElementById('qteach').innerHTML=TEACH[q];
+    document.getElementById('qdetail').style.display='none'; qDetailOpen=false;
+    document.getElementById('qtoggle').textContent='What each of these means ›';
+  }
+  function cellKey(cell){ if(cell===curQCell) return curQ; return {tl:'Q1',tr:'Q2',bl:'EDGE',br:'BR'}[cell]; }
+  function showQDetail(key){
+    var d=DETAIL[key], qd=document.getElementById('qdetail');
+    qd.innerHTML='<div class="qdh">'+d.h+'</div>'+d.b; qd.style.display='block'; qDetailOpen=true;
+    document.getElementById('qtoggle').textContent='Hide detail ›';
+  }
+  document.getElementById('qtoggle').addEventListener('click',function(){
+    if(qDetailOpen){ document.getElementById('qdetail').style.display='none'; qDetailOpen=false; this.textContent='What each of these means ›'; }
+    else if(curQ){ showQDetail(curQ); }
+  });
+  document.querySelectorAll('.qcell').forEach(function(c){
+    c.addEventListener('click',function(){
+      document.querySelectorAll('.qcell').forEach(function(x){x.classList.remove('sel');});
+      c.classList.add('sel');
+      showQDetail(cellKey(c.getAttribute('data-cell')));
+    });
+  });
 
   // gate submit (prototype: confirmation only; wire to lead capture later)
   document.getElementById("sendGuide").addEventListener("click",function(){
