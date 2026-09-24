@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Why your bank says NRI but your CA says resident — a seafarer's two-residency map</title>
+<meta name="description" content="A merchant navy officer has two residencies at once — one under FEMA, one under the Income-tax Act — decided by different rules that move at different times. The complete map, in plain language.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+    --cream:#F6F2ED;--slate:#3A3D4A;--copper:#B87040;--copper-soft:#c98a5f;--dark:#24221E;
+    --bg:var(--cream);--surface:#fffdfa;--ink:#2b2925;--ink-soft:#6b675f;
+    --line:rgba(58,61,74,.16);--line-strong:rgba(58,61,74,.32);
+    --accent:var(--copper);--accent-ink:#7c4a24;--good:#3f6b4f;--warn:#9a5b2a;
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    --sans:"Inter",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;--shadow:0 1px 0 rgba(58,61,74,.06);
+  }
+  :root:not([data-theme="light"]){@media (prefers-color-scheme: dark){
+    --bg:var(--dark);--surface:#2c2a25;--ink:#efe9df;--ink-soft:#b3ada1;
+    --line:rgba(246,242,237,.16);--line-strong:rgba(246,242,237,.30);
+    --accent:var(--copper-soft);--accent-ink:#e0a878;--good:#7fb08f;--warn:#d89a5f;--shadow:0 1px 0 rgba(0,0,0,.2);
+  }}
+  :root[data-theme="dark"]{
+    --bg:var(--dark);--surface:#2c2a25;--ink:#efe9df;--ink-soft:#b3ada1;
+    --line:rgba(246,242,237,.16);--line-strong:rgba(246,242,237,.30);
+    --accent:var(--copper-soft);--accent-ink:#e0a878;--good:#7fb08f;--warn:#d89a5f;--shadow:0 1px 0 rgba(0,0,0,.2);
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:clamp(20px,5vw,44px) clamp(18px,5vw,32px) 64px}
+
+  .mast{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:clamp(30px,6vw,52px)}
+  .tag{font-size:13px;color:var(--ink-soft)}
+  .tag a{color:var(--ink-soft);text-decoration:none}.tag a:hover{color:var(--accent-ink)}
+  .theme-btn{border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:var(--sans);font-size:12.5px;padding:6px 11px;border-radius:999px;cursor:pointer}
+  .theme-btn:hover{border-color:var(--line-strong);color:var(--ink)}
+
+  .hero{margin-bottom:clamp(26px,5vw,42px)}
+  .kicker{font-size:13px;color:var(--accent-ink);font-weight:500;margin:0 0 14px;letter-spacing:.01em}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(33px,7.6vw,54px);line-height:1.05;letter-spacing:.005em;margin:0 0 20px;color:var(--ink);max-width:20ch}
+  .hero .stand{font-size:18px;color:var(--ink);line-height:1.5;max-width:56ch;margin:0 0 4px;font-weight:500}
+  .hero .stand b{font-weight:600}
+
+  h2.sec{font-family:var(--serif);font-weight:600;font-size:clamp(26px,5.6vw,36px);line-height:1.12;margin:clamp(38px,7vw,58px) 0 6px;color:var(--ink);max-width:22ch}
+  .sub{font-size:15.5px;color:var(--ink-soft);line-height:1.55;margin:0 0 22px;max-width:60ch}
+  p.body{font-size:16.5px;color:var(--ink);line-height:1.65;max-width:62ch;margin:0 0 18px}
+  p.body b{font-weight:600}
+  p.body i{color:var(--ink-soft);font-style:italic}
+  .prov{font-size:13.5px;color:var(--ink-soft);font-style:italic}
+  .lead{font-family:var(--serif);font-size:clamp(21px,4.4vw,26px);line-height:1.32;color:var(--ink);max-width:26ch;margin:0 0 20px;font-weight:500}
+
+  .tests{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 0}
+  @media(max-width:560px){.tests{grid-template-columns:1fr}}
+  .test{border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--surface);box-shadow:var(--shadow)}
+  .test .tl{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:8px}
+  .test .th{font-family:var(--serif);font-size:23px;font-weight:600;color:var(--ink);line-height:1.13;margin-bottom:11px}
+  .test p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.58}
+  .test p b{color:var(--ink)}.test p i{font-style:italic}
+
+  .qcap{display:grid;grid-template-columns:auto 1fr 1fr;gap:10px;margin:6px 0 8px;align-items:end}
+  .qcap .corner{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);opacity:.6;text-align:right;line-height:1.35;padding-bottom:4px}
+  .qcap .pole{font-size:12px;color:var(--ink-soft);font-weight:600;text-align:center;padding-bottom:4px;line-height:1.25}
+  .qg{display:grid;grid-template-columns:auto 1fr 1fr;gap:10px}
+  .qrl{font-size:12px;color:var(--ink-soft);font-weight:600;display:flex;align-items:center;justify-content:flex-end;text-align:right;padding-right:4px;min-width:54px;line-height:1.2}
+  .cell{position:relative;overflow:hidden;border:1.5px solid var(--tone,var(--line));border-radius:15px;padding:16px 16px 15px;background:color-mix(in srgb,var(--tone,var(--ink-soft)) 8%,var(--surface));min-height:158px}
+  .cell .num{position:absolute;top:-8px;right:8px;font-family:var(--serif);font-weight:600;font-size:60px;line-height:1;color:var(--tone,var(--line-strong));opacity:.5;pointer-events:none}
+  .cell .nm{font-family:var(--sans);font-size:15.5px;font-weight:600;color:var(--ink);line-height:1.15;position:relative;z-index:1;max-width:15ch}
+  .cell .tg{font-size:12px;color:var(--tone,var(--ink-soft));font-weight:600;margin-top:3px;position:relative;z-index:1}
+  .cell ul{list-style:none;margin:12px 0 0;padding:0;position:relative;z-index:1;display:grid;gap:6px}
+  .cell li{font-size:12.7px;color:var(--ink-soft);line-height:1.38}
+  .cell li b{color:var(--ink);font-weight:600}
+  .t-good{--tone:var(--good)}.t-warn{--tone:var(--warn)}.t-accent{--tone:var(--accent)}.t-neutral{--tone:var(--ink-soft)}
+  .cell .polelab{display:none}
+  @media(max-width:560px){.qcap{display:none}.qg{grid-template-columns:1fr}.qrl{display:none}.cell{min-height:0}.cell .polelab{display:block;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--tone,var(--ink-soft));font-weight:600;margin-bottom:7px;position:relative;z-index:1}}
+
+  .hinge{border:1.5px solid var(--accent);border-radius:16px;padding:22px 24px;margin:6px 0 0;background:color-mix(in srgb,var(--accent) 9%,var(--surface))}
+  .hinge .hh{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--ink);line-height:1.2;margin-bottom:11px}
+  .hinge p{margin:0 0 12px;font-size:15.5px;color:var(--ink-soft);line-height:1.62}
+  .hinge p:last-child{margin-bottom:0}
+  .hinge p b{color:var(--ink)}.hinge p i{font-style:italic}
+
+  .steps{list-style:none;counter-reset:s;margin:8px 0 0;padding:0;display:grid;gap:2px}
+  .steps li{position:relative;padding:15px 0 15px 44px;border-top:1px solid var(--line);counter-increment:s}
+  .steps li:first-child{border-top:none}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:14px;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent-ink);font-family:var(--serif);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .steps .st{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:3px}
+  .steps .sd{font-size:14.5px;color:var(--ink-soft);line-height:1.55}
+  .steps .sd b{color:var(--ink)}
+
+  .miss{display:grid;gap:12px;margin:6px 0 0}
+  .miss .m{border-left:3px solid var(--warn);padding:2px 0 2px 18px}
+  .miss .mh{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:4px}
+  .miss .md{font-size:14.5px;color:var(--ink-soft);line-height:1.58}
+  .miss .md b{color:var(--ink)}
+
+  .story{border:1px solid var(--line);border-radius:16px;padding:22px 24px;background:var(--surface);margin:6px 0 0}
+  .story .sy{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:12px}
+  .story .yr{display:flex;gap:14px;padding:11px 0;border-top:1px solid var(--line)}
+  .story .yr:first-of-type{border-top:none}
+  .story .yl{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--accent-ink);flex:none;min-width:70px;line-height:1.3}
+  .story .yt{font-size:14.5px;color:var(--ink-soft);line-height:1.55}
+  .story .yt b{color:var(--ink);font-weight:600}
+
+  .cta{border:1px solid var(--line-strong);border-radius:16px;padding:28px 26px;margin:clamp(38px,7vw,56px) 0 0;background:var(--surface);text-align:center}
+  .cta h3{font-family:var(--serif);font-size:27px;font-weight:600;color:var(--ink);margin:0 0 8px}
+  .cta p{font-size:15px;color:var(--ink-soft);margin:0 0 18px;line-height:1.5;max-width:44ch;margin-left:auto;margin-right:auto}
+  .btn{display:inline-block;font-family:var(--sans);font-size:15.5px;font-weight:500;cursor:pointer;border-radius:10px;padding:13px 26px;border:1px solid var(--accent);background:var(--accent);color:#fff;text-decoration:none}
+  .btn:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+  :root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#211f1b}
+
+  details.faq{border-top:1px solid var(--line);padding:15px 0}
+  details.faq summary{cursor:pointer;list-style:none;font-size:16px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  details.faq summary::-webkit-details-marker{display:none}
+  details.faq summary .pl{color:var(--accent-ink);font-size:20px;transition:transform .2s;flex:none;line-height:1}
+  details.faq[open] summary .pl{transform:rotate(45deg)}
+  details.faq .a{margin-top:11px;font-size:15px;color:var(--ink-soft);line-height:1.62;max-width:62ch}
+  details.faq .a b{color:var(--ink)}
+
+  footer{border-top:1px solid var(--line);margin-top:44px;padding-top:20px;font-size:12.5px;color:var(--ink-soft);line-height:1.7}
+  footer .cred{color:var(--ink);font-weight:500}
+  .waterline{height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent);margin:0 0 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <span class="tag"><a href="/tools">Residency &amp; tax tools for merchant navy officers</a></span>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle light or dark">Dark</button>
+  </header>
+
+  <section class="hero">
+    <p class="kicker">The two-residency map</p>
+    <h1>Your bank says you're an NRI. Your CA says you're a resident. Both are right.</h1>
+    <p class="stand">It happens to seafarers every year, and it isn't a clerical error. You carry <b>two residencies at the same time</b> — one under FEMA, one under the Income-tax Act — decided by different rules that flip at different moments. Read them as one status and you will, sooner or later, file the wrong return or hold the wrong account. Here is the whole thing on a single map.</p>
+  </section>
+
+  <h2 class="sec">Two laws, two questions, two answers</h2>
+  <p class="body">Most people have one residency because most people don't spend eight months of the year on the far side of an ocean. You do. And India looks at that life through two separate lenses that were written for two separate purposes, and never made to agree.</p>
+  <p class="body">One lens is <b>FEMA</b> — the foreign-exchange law that decides which bank accounts you may hold and how money moves in and out. The other is the <b>Income-tax Act</b>, which decides only one thing: what India is allowed to tax this year. Neither is "your real status." You have both, always, and on any given day they may point in opposite directions.</p>
+
+  <div class="tests">
+    <div class="test">
+      <div class="tl">Decides your accounts &amp; money movement</div>
+      <div class="th">FEMA — where you mean to live</div>
+      <p>Turns on <b>intention</b>, read against the year just gone. The moment you leave to work on a foreign ship, you become a <b>person resident outside India</b> — and stay one for as long as you're at sea for a living. That status is what lets you hold <b>NRE, NRO and FCNR</b> accounts at all. It doesn't count your days; it reads your purpose. Come home to settle and it reverses the day you land. <span class="prov">FEMA §2(v).</span></p>
+    </div>
+    <div class="test">
+      <div class="tl">Decides what India can tax</div>
+      <div class="th">Income tax — how many days this year</div>
+      <p>Turns on <b>arithmetic</b>. It counts the days you spent in India this financial year, then removes the days you were on an eligible international voyage — measured from the sign-on and sign-off dates in your <b>CDC</b>, not your passport (Rule 126). Stay under 182 days in India and you're a non-resident for the year. Cross it and you're a resident, whatever your bank believes about you. <span class="prov">Section 6.</span></p>
+    </div>
+  </div>
+  <p class="body" style="margin-top:22px">This is the whole root of the confusion. FEMA asks <i>what are you doing with your life</i>, and answers slowly, by intent. The tax law asks <i>how many nights were you home</i>, and answers freshly every April. A single heavy stretch of shore leave can flip the second while the first hasn't moved an inch — and now your bank and your assessing officer are describing two different people, both of whom are you.</p>
+
+  <h2 class="sec">The four places a seafarer can stand</h2>
+  <p class="sub">Cross the two axes — your bank status down the side, whether your foreign income is taxable across the top — and you're always in exactly one of four squares. Two are quiet. Two are where money is won or lost.</p>
+
+  <div class="qcap">
+    <div class="corner">bank&nbsp;↓<br>tax&nbsp;→</div>
+    <div class="pole">Foreign income still<br>outside India's net</div>
+    <div class="pole">Worldwide income<br>now taxable</div>
+  </div>
+  <div class="qg">
+    <div class="qrl">NRI</div>
+    <div class="cell t-good">
+      <span class="num">1</span>
+      <div class="polelab">NRI · foreign income shielded</div>
+      <div class="nm">Sailing steady</div>
+      <div class="tg">The clean baseline</div>
+      <ul>
+        <li><b>Bank:</b> NRE, NRO, FCNR all valid; NRE interest tax-free.</li>
+        <li><b>Tax:</b> your foreign-ship salary is outside India's net.</li>
+        <li><b>Invest:</b> as an NRI, through your NRE/NRO accounts.</li>
+      </ul>
+    </div>
+    <div class="cell t-warn">
+      <span class="num">2</span>
+      <div class="polelab">NRI · worldwide income taxable</div>
+      <div class="nm">The shore-heavy year</div>
+      <div class="tg">The trap</div>
+      <ul>
+        <li><b>Bank:</b> still an NRI — NRE valid, interest still exempt.</li>
+        <li><b>Tax:</b> resident this year; worldwide income taxable, foreign assets to report.</li>
+        <li><b>Danger:</b> filing as if you were still non-resident.</li>
+      </ul>
+    </div>
+    <div class="qrl">Resident</div>
+    <div class="cell t-accent">
+      <span class="num">3</span>
+      <div class="polelab">Resident · foreign income shielded</div>
+      <div class="nm">Coming ashore</div>
+      <div class="tg">The window</div>
+      <ul>
+        <li><b>Bank:</b> redesignate NRE/NRO now; RFC holds your foreign currency.</li>
+        <li><b>Tax:</b> RNOR — foreign income stays out for 2–3 years; RFC interest tax-free.</li>
+        <li><b>Move:</b> time the account changes against the RNOR clock.</li>
+      </ul>
+    </div>
+    <div class="cell t-neutral">
+      <span class="num">4</span>
+      <div class="polelab">Resident · worldwide income taxable</div>
+      <div class="nm">Home for good</div>
+      <div class="tg">Fully home</div>
+      <ul>
+        <li><b>Bank:</b> resident accounts; RFC interest now taxable.</li>
+        <li><b>Tax:</b> worldwide income taxable; foreign assets in Schedule FA.</li>
+        <li><b>Invest:</b> abroad through the LRS route (USD 250,000 a year).</li>
+      </ul>
+    </div>
+  </div>
+  <p class="body" style="margin-top:22px">Read the columns and the map teaches itself. The <b>left</b> column is every state where your foreign income is still India's to leave alone — whether because you're a non-resident (square 1) or because you're inside the RNOR window (square 3). The <b>right</b> column is where India taxes the world. The seafarer's whole financial art is spending as long as honestly possible on the left, and knowing to the day when you cross to the right.</p>
+
+  <h2 class="sec">The one provision that ties it together</h2>
+  <div class="hinge">
+    <div class="hh">Your NRE interest break follows your bank status, not the taxman's.</div>
+    <p>The exemption on NRE-account interest lives in <b>Section 10(4)(ii)</b>, and it is written for "an individual who is a person resident outside India <i>under FEMA</i>." Read that carefully: it hangs on your <b>FEMA</b> status, not your income-tax status. So a single tax-resident year (square 2) doesn't touch it — your FEMA status hasn't changed, so the interest stays tax-free. But the day you move home for good (square 3), it ends, because <i>that</i> is the day FEMA flips.</p>
+    <p>One line of the tax code explains why the trap and the window sit where they do — and why the officer who thinks "I'm a resident now, so my NRE interest is taxable" is sometimes right and sometimes wrong, depending entirely on which of the two residencies actually moved.</p>
+  </div>
+
+  <h2 class="sec">Square 3, up close: the window worth planning a year around</h2>
+  <p class="lead">The most valuable stretch of a seafarer's financial life is also the one almost nobody plans for.</p>
+  <p class="body">When you come ashore for good, two things change on the same day, and only one of them is in your hands. Your <b>FEMA</b> status flips to resident the moment you land with the intention to stay — not after 182 days, not when you tell the bank, but on arrival. From that day your NRE and NRO accounts are the wrong accounts to be holding, and redesignating them is your job, not the bank's.</p>
+  <p class="body">But for <b>income tax</b> you don't become a full resident straight away. For two to three years you're likely <b>Resident but Not Ordinarily Resident</b> — RNOR — and through that window your foreign income stays outside India's reach, and interest on a <b>Resident Foreign Currency (RFC)</b> account stays tax-free. Line the account changes up against the RNOR clock and you can keep years of untaxed foreign-currency interest while you reorganise everything else. Fumble the timing and the meter starts running from day one.</p>
+  <p class="body">Here is the order that protects the window:</p>
+  <ol class="steps">
+    <li><div class="st">Redesignate your NRE and NRO accounts</div><div class="sd">Do it promptly on return — the common standard is within a month or so. Operating an NRE account after you've become a FEMA resident is a contravention, and the Section 10(4)(ii) exemption stops the day your status changes, told or not.</div></li>
+    <li><div class="st">Open an RFC account before you need it</div><div class="sd">Foreign remittances arriving after you're back go into <b>RFC</b>, not the old NRE-turned-resident account. RFC lets you keep money in dollars, and its interest rides tax-free through your RNOR years.</div></li>
+    <li><div class="st">Let NRE and FCNR fixed deposits run to maturity</div><div class="sd">RBI lets an existing FCNR or NRE deposit run to its contracted maturity even after you become resident. Breaking them early is usually needless. <b>FCNR is the one wrapper that survives the status change untouched</b> — a reason to move money into one <i>before</i> you fly home, not after.</div></li>
+    <li><div class="st">Use the window while it's open</div><div class="sd">This is the stretch to bring foreign assets in order, crystallise gains that would be taxed once you're ROR, and set up what comes next — before the RNOR clock runs out and the whole world becomes taxable.</div></li>
+  </ol>
+
+  <h2 class="sec">The mistakes that cost the most</h2>
+  <p class="sub">Every one of these comes from treating the two residencies as one. They are the difference between a clean year and an assessment notice.</p>
+  <div class="miss">
+    <div class="m"><div class="mh">Filing as a non-resident in a shore-heavy year</div><div class="md">You had a long stint at home, crossed 182 days, and quietly became a resident for tax — but filed the way you always have. If you're ROR that year, your <b>worldwide</b> income was taxable and your foreign accounts were reportable. The return was wrong before it was submitted.</div></div>
+    <div class="m"><div class="mh">Assuming your NRE credit made your salary taxable</div><div class="md">It didn't — a non-resident's foreign-ship salary isn't caught just because it lands in an NRE account (CBDT Circular 13/2017). The mirror-image error is worse: letting that salary land in a <b>resident</b> account, which muddies a clean position and invites the very argument the NRE route avoids.</div></div>
+    <div class="m"><div class="mh">Running an NRE account after you've come home</div><div class="md">FEMA made you a resident the day you landed. Keeping and operating an NRE account past that is a contravention — penalty up to three times the amount involved — and it quietly ends your tax-free NRE interest. The bank won't always catch it. The duty to fix it is yours.</div></div>
+    <div class="m"><div class="mh">Sleeping through the RNOR window</div><div class="md">The two-to-three-year window where foreign income is shielded and RFC interest is tax-free closes on a fixed date. Officers who don't know it exists pay tax from the first year home that they never needed to pay — and lose the one clean chance to reorganise foreign assets untaxed.</div></div>
+    <div class="m"><div class="mh">Waiting for the bank to tell you</div><div class="md">On every one of these, the reporting and redesignation duty sits with you, not your bank and not your employer. "Nobody told me" is not a defence FEMA or the Income-tax Act recognises.</div></div>
+  </div>
+
+  <h2 class="sec">One officer, four years</h2>
+  <p class="sub">The same person can move through three of the four squares in the space of a few years without changing anything but the rhythm of their voyages.</p>
+  <div class="story">
+    <div class="sy">An illustration — not a real person</div>
+    <div class="yr"><div class="yl">Year 1</div><div class="yt"><b>Square 1.</b> A full contract year at sea, 70 days in India. Non-resident for tax, NRI for FEMA. Salary lands in NRE, tax-free; he invests as an NRI. Both residencies agree.</div></div>
+    <div class="yr"><div class="yl">Year 2</div><div class="yt"><b>Square 2 — the trap.</b> A medical break and a long leave push him to 195 days in India. Still an NRI for his bank, so the NRE account is fine — but he's now a resident for tax. He files as a non-resident out of habit. The mistake is invisible until it isn't.</div></div>
+    <div class="yr"><div class="yl">Year 3</div><div class="yt"><b>Square 3 — the window.</b> He comes ashore to take a shore posting. FEMA makes him resident on arrival, so he redesignates his accounts and opens an RFC. For tax he's RNOR — foreign income still shielded, RFC interest tax-free. This is the year to reorganise, and he knows it.</div></div>
+    <div class="yr"><div class="yl">Year 6</div><div class="yt"><b>Square 4 — home for good.</b> The RNOR window has closed. He's a full resident on both axes now; worldwide income is taxable, foreign assets go in Schedule FA, and anything abroad goes through the LRS. Settled, and finally on one map instead of two.</div></div>
+  </div>
+
+  <div class="cta">
+    <h3>Which square are you in?</h3>
+    <p>This page teaches the map. The residency checker puts <i>you</i> on it — counted from your own CDC voyages, in about ninety seconds.</p>
+    <a class="btn" href="/tools/residency">Find your quadrant →</a>
+  </div>
+
+  <h2 class="sec">Common questions</h2>
+  <details class="faq"><summary>My bank says NRI, my accountant says resident — who's wrong? <span class="pl">+</span></summary>
+    <div class="a">Neither, and that's the whole point. Your bank applies FEMA (intention, read against last year); your accountant applies the Income-tax Act (this year's days). You can be a genuine NRI for one and a genuine resident for the other in the very same year. The map above shows exactly which square that combination puts you in.</div></details>
+  <details class="faq"><summary>Does my salary become taxable the moment it hits my Indian account? <span class="pl">+</span></summary>
+    <div class="a">No. A non-resident seafarer's salary, earned for work done outside India on a foreign-going ship, isn't taxed in India just because it's credited to an NRE account — the CBDT said so plainly in Circular 13/2017. The money is taxed where it's <b>earned and first received</b>, not where it's later remitted. Crossing that off is one of the first things worth settling.</div></details>
+  <details class="faq"><summary>I became a resident for tax this year. Is my NRE interest now taxable? <span class="pl">+</span></summary>
+    <div class="a">Not just because your day-count tipped over. The NRE-interest exemption follows your <b>FEMA</b> status under Section 10(4)(ii), and a heavy shore-leave year doesn't change that — you're still a person resident outside India under FEMA. The exemption ends when your FEMA status changes, which is when you move back to settle, not when a single year's arithmetic makes you tax-resident.</div></details>
+  <details class="faq"><summary>What exactly is RNOR, and why does everyone say it matters? <span class="pl">+</span></summary>
+    <div class="a">Resident but Not Ordinarily Resident — a transitional status you usually hold for two to three years after returning to India for good. Through it, your foreign income largely stays outside Indian tax and RFC-account interest is tax-free. It's the coming-ashore window, and because it closes on a fixed date, it rewards planning and punishes drift.</div></details>
+  <details class="faq"><summary>I'm moving back permanently. What do I actually have to do with my accounts? <span class="pl">+</span></summary>
+    <div class="a">Redesignate your NRE and NRO accounts to resident accounts promptly — the common standard is within a month or so — because under FEMA you're resident from the day you land. Open an RFC account and move foreign currency into it, ideally before any FCNR deposit matures, so that interest stays tax-free through your RNOR window. Existing FCNR and NRE fixed deposits can run to their contracted maturity. The duty to do all this is yours, not the bank's.</div></details>
+  <details class="faq"><summary>Does any of this apply if I've already settled abroad for good? <span class="pl">+</span></summary>
+    <div class="a">If you've settled abroad, you sit firmly in square 1 for tax — a non-resident — and the day-count is a formality rather than a cliff-edge. What matters more for you is how you invest back into India as an NRI, the treaty between India and where you live, and the tax deducted at source on your Indian gains. Those are separate questions with their own tools; the checker will still confirm your status in a minute.</div></details>
+
+  <footer>
+    <div class="waterline"></div>
+    <div class="cred">AMFI Registered Mutual Fund Distributor · ARN-XXXXXX</div>
+    <div>An educational explanation of FEMA Section 2(v), Section 6 and Section 10(4)(ii) of the Income-tax Act, and the RBI rules on account redesignation — not tax, legal or investment advice. FEMA status turns on intention, which can be genuinely uncertain, and redesignation carries real deadlines and penalties. Confirm your own position and timing with a qualified professional before you act. Provided by an AMFI-registered mutual fund distributor, not a tax or investment adviser.</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var tb=document.getElementById("themeBtn");
+  tb.addEventListener("click",function(){
+    var cur=document.documentElement.getAttribute("data-theme");
+    var next=cur==="dark"?"light":"dark";
+    document.documentElement.setAttribute("data-theme",next);
+    tb.textContent=next==="dark"?"Light":"Dark";
+    try{localStorage.setItem("seafarer-theme",next);}catch(e){}
+  });
+  try{var sv=localStorage.getItem("seafarer-theme");if(sv){document.documentElement.setAttribute("data-theme",sv);tb.textContent=sv==="dark"?"Light":"Dark";}}catch(e){}
+})();
+</script>
+</body>
+</html>
