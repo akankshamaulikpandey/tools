@@ -55,6 +55,14 @@
   a.card .cgo .ar{font-size:17px;transition:transform .16s}
   a.card:hover .cgo .ar{transform:translateX(3px)}
 
+  .feature{display:block;text-decoration:none;border:1.5px solid var(--accent);border-radius:16px;padding:26px 26px 24px;background:color-mix(in srgb,var(--accent) 8%,var(--surface));color:var(--ink);box-shadow:var(--shadow);transition:border-color .16s,transform .16s;margin-bottom:clamp(32px,6vw,48px)}
+  .feature:hover{transform:translateY(-1px);border-color:var(--accent-ink)}
+  .feature .fe{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:11px}
+  .feature .ft{font-family:var(--serif);font-weight:600;font-size:clamp(24px,5.2vw,33px);line-height:1.11;color:var(--ink);margin:0 0 12px;max-width:22ch}
+  .feature .fd{font-size:15.5px;color:var(--ink-soft);line-height:1.55;max-width:60ch;margin:0 0 16px}
+  .feature .fgo{display:inline-flex;align-items:center;gap:7px;font-size:14.5px;font-weight:500;color:var(--accent-ink)}
+  .feature .fgo .ar{font-size:17px;transition:transform .16s}
+  .feature:hover .fgo .ar{transform:translateX(3px)}
   .soon{border:1px dashed var(--line-strong);border-radius:14px;padding:20px 22px}
   .soon .sh{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:12px}
   .soon ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
@@ -79,7 +87,15 @@
     <p>Straight answers to the tax and residency questions that don't fit a normal salary — counted the way the law actually counts them, for the way you actually work. Free, no sign-up.</p>
   </section>
 
-  <p class="sec-label">Available now</p>
+  <p class="sec-label">Start here</p>
+  <a class="feature" href="/tools/two-residencies">
+    <div class="fe">The idea everything else rests on</div>
+    <div class="ft">Why does my bank say NRI but my CA says resident?</div>
+    <div class="fd">You carry two residencies at once — one under FEMA, one under the Income-tax Act — decided by different rules that flip at different times. Read the map first, in plain language; it's what the rest of these tools sit on.</div>
+    <span class="fgo">Read the two-residency map <span class="ar">→</span></span>
+  </a>
+
+  <p class="sec-label">Check your own status</p>
   <div class="cards">
     <a class="card" href="/tools/residency">
       <div class="ct">Am I an NRI this year?</div>
@@ -90,11 +106,6 @@
       <div class="ct">Is my salary taxable in India?</div>
       <div class="cd">Your pay lands in an Indian NRE account — is it caught? Check yours against the four facts that actually decide it, and the CBDT circular that protects a non-resident's foreign-ship salary.</div>
       <span class="cgo">Open the salary checker <span class="ar">→</span></span>
-    </a>
-    <a class="card" href="/tools/two-residencies">
-      <div class="ct">Why does my bank say NRI but my CA says resident?</div>
-      <div class="cd">You have two residencies — one under FEMA, one under the Income-tax Act — and they don't move together. The whole thing on a single map, in plain language.</div>
-      <span class="cgo">Read the two-residency map <span class="ar">→</span></span>
     </a>
   </div>
 
