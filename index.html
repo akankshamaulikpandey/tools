@@ -54,6 +54,9 @@
   a.card .cgo{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:500;color:var(--accent-ink)}
   a.card .cgo .ar{font-size:17px;transition:transform .16s}
   a.card:hover .cgo .ar{transform:translateX(3px)}
+  a.card.learn{background:color-mix(in srgb,var(--accent) 7%,var(--surface));border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+  a.card.learn:hover{border-color:var(--accent)}
+  a.card .ce{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin:0 0 9px}
 
   .feature{display:block;text-decoration:none;border:1.5px solid var(--accent);border-radius:16px;padding:26px 26px 24px;background:color-mix(in srgb,var(--accent) 8%,var(--surface));color:var(--ink);box-shadow:var(--shadow);transition:border-color .16s,transform .16s;margin-bottom:clamp(32px,6vw,48px)}
   .feature:hover{transform:translateY(-1px);border-color:var(--accent-ink)}
@@ -88,19 +91,20 @@
   </section>
 
   <p class="sec-label">Start here</p>
-  <a class="feature" href="/tools/two-residencies">
-    <div class="fe">The idea everything else rests on</div>
-    <div class="ft">Why does my bank say NRI but my CA says resident?</div>
-    <div class="fd">You carry two residencies at once — one under FEMA, one under the Income-tax Act — decided by different rules that flip at different times. Read the map first, in plain language; it's what the rest of these tools sit on.</div>
-    <span class="fgo">Read the two-residency map <span class="ar">→</span></span>
+  <a class="feature" href="/tools/coming-ashore">
+    <div class="fe">The question every officer carries</div>
+    <div class="ft">When could you stop sailing?</div>
+    <div class="fd">A retirement calculator built for the sailing rhythm — contract, lump sum, break — not a monthly SIP. Put in how you sail and save, set your own assumptions, and see the age you could step ashore for good.</div>
+    <span class="fgo">Open the calculator <span class="ar">→</span></span>
   </a>
 
-  <p class="sec-label">Check your own status</p>
+  <p class="sec-label">Understand &amp; check</p>
   <div class="cards">
-    <a class="card" href="/tools/coming-ashore">
-      <div class="ct">When could I stop sailing?</div>
-      <div class="cd">A retirement calculator built for the sailing rhythm — contract, lump sum, break — not a monthly SIP. Work out roughly the age you could step ashore for good, on your own assumptions.</div>
-      <span class="cgo">Open the coming-ashore calculator <span class="ar">→</span></span>
+    <a class="card learn" href="/tools/two-residencies">
+      <div class="ce">Start by understanding</div>
+      <div class="ct">Why does my bank say NRI but my CA says resident?</div>
+      <div class="cd">You carry two residencies at once — one under FEMA, one under the Income-tax Act — and they don't move together. The whole thing on a single map, in plain language.</div>
+      <span class="cgo">Read the two-residency map <span class="ar">→</span></span>
     </a>
     <a class="card" href="/tools/residency">
       <div class="ct">Am I an NRI this year?</div>
