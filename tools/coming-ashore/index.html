@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>When can I stop sailing? — the coming-ashore calculator for seafarers</title>
-<meta name="description" content="A retirement calculator built for the sailing rhythm — contract, lump sum, break, repeat — not a monthly SIP. Work out roughly the age you could step ashore for good, on your own assumptions.">
+<meta name="description" content="A retirement calculator built for the sailing rhythm — contract, lump sum, break — not a monthly SIP. Find the age you could step ashore, or what you'd need to save to stop by a chosen age. Your own assumptions.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -38,13 +38,21 @@
   h1{font-family:var(--serif);font-weight:600;font-size:clamp(31px,7vw,48px);line-height:1.06;letter-spacing:.005em;margin:0 0 16px;color:var(--ink);max-width:16ch}
   .lede{font-size:16.5px;color:var(--ink-soft);max-width:56ch;margin:0 0 8px;line-height:1.55}.lede b{color:var(--ink)}
 
-  .group{margin:clamp(26px,5vw,38px) 0 0}
+  .toggles{display:flex;flex-wrap:wrap;gap:14px;margin:clamp(24px,5vw,34px) 0 0}
+  .toggle{flex:1;min-width:250px}
+  .toggle .tl{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-bottom:8px}
+  .seg{display:flex;border:1px solid var(--line-strong);border-radius:11px;padding:4px;background:var(--surface);gap:4px}
+  .seg button{flex:1;border:none;background:none;font-family:var(--sans);font-size:13.5px;font-weight:500;color:var(--ink-soft);padding:9px 8px;border-radius:8px;cursor:pointer;line-height:1.2;transition:background .15s,color .15s}
+  .seg button.on{background:var(--accent);color:#fff}
+  :root[data-theme="dark"] .seg button.on,:root:not([data-theme="light"]) .seg button.on{color:#211f1b}
+  .seg button .s2{display:block;font-size:11px;font-weight:400;opacity:.85;margin-top:1px}
+
+  .group{margin:clamp(24px,5vw,34px) 0 0}
   .gl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin:0 0 4px}
   .gh{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px;line-height:1.15}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   @media(max-width:520px){.grid{grid-template-columns:1fr}}
-  .f{display:flex;flex-direction:column}
-  .f.full{grid-column:1/-1}
+  .f{display:flex;flex-direction:column}.f.full{grid-column:1/-1}
   .f label{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:7px}
   .f .sub{font-size:12.5px;color:var(--ink-soft);margin-top:6px;line-height:1.45}
   .inbox{position:relative;display:flex;align-items:center}
@@ -56,49 +64,63 @@
   .sl .slhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
   .sl .slval{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--accent-ink)}
   input[type=range]{width:100%;accent-color:var(--accent);height:6px}
+
+  .ranks{display:grid;gap:10px}
+  .rankrow{display:grid;grid-template-columns:1fr 90px 140px 34px;gap:10px;align-items:center}
+  @media(max-width:520px){.rankrow{grid-template-columns:1fr 1fr;gap:8px}.rankrow .rlabel{grid-column:1/-1}.rankrow .rm{grid-column:2;justify-self:end}}
+  .rankrow input{font-size:15px;padding:10px 12px}.rankrow .inbox input{padding-left:24px}
+  .rankrow .rm{border:1px solid var(--line);background:var(--surface);border-radius:8px;color:var(--ink-soft);font-size:18px;cursor:pointer;line-height:1;padding:8px 0;height:100%}
+  .rankrow .rm:hover{color:var(--warn);border-color:var(--warn)}
+  .rankhead{display:grid;grid-template-columns:1fr 90px 140px 34px;gap:10px;font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-bottom:2px}
+  @media(max-width:520px){.rankhead{display:none}}
+  .addbtn{border:1px dashed var(--line-strong);background:none;color:var(--accent-ink);font-family:var(--sans);font-size:14.5px;padding:11px;border-radius:10px;cursor:pointer;width:100%;margin-top:10px}
+  .addbtn:hover{border-color:var(--accent)}
+
+  .glide{font-size:15px;color:var(--ink-soft);line-height:1.5;max-width:58ch;margin:0 0 16px}
+  .goals{display:grid;gap:10px}
+  .goalrow{display:grid;grid-template-columns:1fr 140px 92px 34px;gap:10px;align-items:center}
+  @media(max-width:520px){.goalrow{grid-template-columns:1fr 1fr;gap:8px}.goalrow .glabel{grid-column:1/-1}.goalrow .rm{grid-column:2;justify-self:end}}
+  .goalrow input{font-size:15px;padding:10px 12px}.goalrow .inbox input{padding-left:24px}
+  .goalrow .rm{border:1px solid var(--line);background:var(--surface);border-radius:8px;color:var(--ink-soft);font-size:18px;cursor:pointer;line-height:1;padding:8px 0;height:100%}
+  .goalrow .rm:hover{color:var(--warn);border-color:var(--warn)}
+  .goalrow .gpreview{grid-column:1/-1;font-size:12.5px;color:var(--accent-ink);min-height:15px;margin-top:-3px}
+  .goalrow .gpreview b{color:var(--ink);font-weight:600}
+
   .actions{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
   .btn{font-family:var(--sans);font-size:15.5px;font-weight:500;cursor:pointer;border-radius:10px;padding:13px 24px;border:1px solid var(--accent);background:var(--accent);color:#fff}
   .btn:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
   :root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#211f1b}
   .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}.btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink)}
 
-  .glide{font-size:15px;color:var(--ink-soft);line-height:1.5;max-width:58ch;margin:0 0 16px}
-  .goals{display:grid;gap:10px}
-  .goalrow{display:grid;grid-template-columns:1fr 140px 92px 34px;gap:10px;align-items:center}
-  @media(max-width:520px){.goalrow{grid-template-columns:1fr 1fr;gap:8px}.goalrow .glabel{grid-column:1/-1}.goalrow .rm{grid-column:2;justify-self:end}}
-  .goalrow input{font-size:15px;padding:10px 12px}
-  .goalrow .inbox input{padding-left:24px}
-  .goalrow .rm{border:1px solid var(--line);background:var(--surface);border-radius:8px;color:var(--ink-soft);font-size:18px;cursor:pointer;line-height:1;padding:8px 0;height:100%}
-  .goalrow .rm:hover{color:var(--warn);border-color:var(--warn)}
-  .addgoal{border:1px dashed var(--line-strong);background:none;color:var(--accent-ink);font-family:var(--sans);font-size:14.5px;padding:11px;border-radius:10px;cursor:pointer;width:100%;margin-top:12px}
-  .addgoal:hover{border-color:var(--accent)}
-  .goalrow .gpreview{grid-column:1/-1;font-size:12.5px;color:var(--accent-ink);min-height:15px;margin-top:-3px}
-  .goalrow .gpreview b{color:var(--ink);font-weight:600}
-  .subnote{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:-6px 0 20px;padding:13px 15px;border:1px dashed var(--line-strong);border-radius:11px}
-  .subnote b{color:var(--ink);font-weight:600}
-  /* result */
+  #form[data-prog="simple"] .rankSave{display:none}
+  #form[data-prog="rank"] .simpleSave{display:none}
+  #form[data-mode="fwd"] .bwdOnly{display:none}
+  #form[data-mode="bwd"] .fwdOnly{display:none}
+
   #result{display:none;margin-top:8px}
   #result.show{display:block;animation:rise .35s ease}
   @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){#result.show{animation:none}}
   .hero-out{border:1.5px solid var(--tone,var(--accent));border-radius:18px;padding:26px 24px;background:color-mix(in srgb,var(--tone,var(--accent)) 10%,var(--surface));margin-bottom:20px}
   .hero-out .hl{font-size:13px;color:var(--ink-soft);margin-bottom:6px}
-  .hero-out .hbig{font-family:var(--serif);font-weight:600;font-size:clamp(36px,9vw,58px);line-height:1.02;color:var(--ink)}
+  .hero-out .hbig{font-family:var(--serif);font-weight:600;font-size:clamp(34px,8vw,54px);line-height:1.03;color:var(--ink)}
   .hero-out .hbig em{font-style:normal;color:var(--accent-ink)}
-  .hero-out .hsub{font-size:15.5px;color:var(--ink-soft);line-height:1.5;margin-top:10px;max-width:50ch}.hero-out .hsub b{color:var(--ink)}
+  .hero-out .hsub{font-size:15.5px;color:var(--ink-soft);line-height:1.5;margin-top:10px;max-width:52ch}.hero-out .hsub b{color:var(--ink)}
   .numbers{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
   .nb{border:1px solid var(--line);border-radius:12px;padding:15px 17px;background:var(--surface)}
   .nb .nl{font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-bottom:5px}
   .nb .nv{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--ink);line-height:1.1}
   .nb .nd{font-size:12.5px;color:var(--ink-soft);margin-top:4px;line-height:1.4}
+  .subnote{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:-6px 0 20px;padding:13px 15px;border:1px dashed var(--line-strong);border-radius:11px}.subnote b{color:var(--ink);font-weight:600}
+  .schedout{margin:0 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+  .schedout .sor{display:flex;justify-content:space-between;gap:12px;padding:11px 16px;border-top:1px solid var(--line);font-size:14.5px}
+  .schedout .sor:first-child{border-top:none}
+  .schedout .sor .sl2{color:var(--ink-soft)}.schedout .sor .sv2{color:var(--ink);font-weight:600}
   .chartwrap{border:1px solid var(--line);border-radius:14px;padding:18px 16px 12px;background:var(--surface);margin-bottom:20px;overflow-x:auto}
   .chartwrap .ct{font-size:13px;color:var(--ink-soft);margin-bottom:10px}
-  svg .grid-l{stroke:var(--line);stroke-width:1}
-  svg .axis{stroke:var(--line-strong);stroke-width:1}
-  svg text{font-family:var(--sans);font-size:10px;fill:var(--ink-soft)}
+  svg .grid-l{stroke:var(--line);stroke-width:1}svg .axis{stroke:var(--line-strong);stroke-width:1}svg text{font-family:var(--sans);font-size:10px;fill:var(--ink-soft)}
   .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:var(--ink-soft)}
   .legend .sw{display:inline-block;width:16px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
-
   .frame{border-left:3px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0;padding:14px 16px;margin:0 0 22px;font-size:14px;color:var(--ink-soft);line-height:1.55}.frame b{color:var(--ink)}
   .gate{border:1px solid var(--accent);border-radius:14px;padding:20px;margin:0 0 20px;background:var(--surface)}
   .gate .gth{font-family:var(--serif);font-size:21px;font-weight:600;color:var(--ink);margin-bottom:6px}
@@ -120,117 +142,143 @@
 
   <p class="kicker">The coming-ashore calculator</p>
   <h1>When could you stop sailing?</h1>
-  <p class="lede">Every retirement calculator assumes a steady monthly salary. Yours isn't — you earn in lumps, contract by contract, with breaks in between. This one is built for that rhythm. Put in how you sail and save, set your own assumptions, and it shows roughly the age you could step ashore for good. <b>An illustration on your numbers — not a forecast or advice.</b></p>
+  <p class="lede">Every retirement calculator assumes a steady monthly salary. Yours isn't — you earn in lumps, contract by contract, with breaks in between. This one is built for that rhythm. <b>An illustration on your numbers — not a forecast or advice.</b></p>
 
-  <!-- YOU NOW -->
-  <div class="group">
-    <div class="gl">1 · You, today</div>
-    <div class="gh">Where you're starting from</div>
-    <div class="grid">
-      <div class="f"><label for="age">Your age now</label><input type="number" id="age" min="18" max="70" placeholder="34" inputmode="numeric"></div>
-      <div class="f"><label for="rank">Your rank</label>
-        <select id="rank">
-          <option value="">Select…</option>
-          <option>Cadet / Trainee</option>
-          <option>Junior officer (3rd Off / 4th Eng)</option>
-          <option>2nd Officer / 3rd Engineer</option>
-          <option>Chief Officer / 2nd Engineer</option>
-          <option>Master / Chief Engineer</option>
-          <option>Shore / other</option>
-        </select>
+  <div id="form" data-mode="fwd" data-prog="simple">
+    <div class="toggles">
+      <div class="toggle">
+        <div class="tl">What do you want to know?</div>
+        <div class="seg" id="modeSeg">
+          <button data-mode="fwd" class="on">When can I stop?<span class="s2">I'll say what I save</span></button>
+          <button data-mode="bwd">What must I save?<span class="s2">I'll pick an age</span></button>
+        </div>
       </div>
-      <div class="f full"><label for="corpus">What you've already saved and invested</label>
-        <div class="inbox"><span class="pre">₹</span><input class="rupee" type="number" id="corpus" min="0" placeholder="15,00,000" inputmode="numeric"></div>
-        <div class="sub">Everything earmarked for the long term — funds, deposits, whatever's meant to grow.</div>
+      <div class="toggle">
+        <div class="tl">How your saving grows</div>
+        <div class="seg" id="progSeg">
+          <button data-prog="simple" class="on">Simple growth<span class="s2">a steady % a year</span></button>
+          <button data-prog="rank">Map my ranks<span class="s2">promotion by promotion</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="gl">1 · You, today</div>
+      <div class="gh">Where you're starting from</div>
+      <div class="grid">
+        <div class="f"><label for="age">Your age now</label><input type="number" id="age" min="18" max="70" placeholder="34" inputmode="numeric"></div>
+        <div class="f"><label for="rank">Your rank</label>
+          <select id="rank">
+            <option value="">Select…</option>
+            <option>Cadet / Trainee</option>
+            <option>Junior officer (3rd Off / 4th Eng)</option>
+            <option>2nd Officer / 3rd Engineer</option>
+            <option>Chief Officer / 2nd Engineer</option>
+            <option>Master / Chief Engineer</option>
+            <option>Shore / other</option>
+          </select>
+        </div>
+        <div class="f full"><label for="corpus">What you've already saved and invested</label>
+          <div class="inbox"><span class="pre">₹</span><input class="rupee" type="number" id="corpus" min="0" placeholder="15,00,000" inputmode="numeric"></div>
+          <div class="sub">Everything earmarked for the long term — funds, deposits, whatever's meant to grow.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="gl">2 · Your rhythm</div>
+      <div class="gh">How you sail and save</div>
+      <div class="grid">
+        <div class="f"><label for="mon">Months on (a contract)</label><input type="number" id="mon" min="1" max="12" placeholder="6" inputmode="numeric"></div>
+        <div class="f"><label for="moff">Months off (the break)</label><input type="number" id="moff" min="0" max="12" placeholder="3" inputmode="numeric"></div>
+      </div>
+
+      <div class="simpleSave">
+        <div class="grid" style="margin-top:16px">
+          <div class="f full fwdOnly"><label for="save">What you put aside each contract</label>
+            <div class="inbox"><span class="pre">₹</span><input class="rupee" type="number" id="save" min="0" placeholder="6,00,000" inputmode="numeric"></div>
+            <div class="sub">The amount you actually save and invest from each sign-off — not your whole pay.</div>
+          </div>
+          <div class="f full sl">
+            <div class="slhead"><label for="grow">How much your saving grows each year</label><span class="slval" id="growV">6%</span></div>
+            <input type="range" id="grow" min="0" max="15" value="6" step="1">
+            <div class="sub">As you get promoted and earn more, you save more. Your call on the pace.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rankSave" style="margin-top:16px">
+        <div class="f full"><label>Your promotion path</label>
+          <div class="sub" style="margin-top:0;margin-bottom:12px">Add each stage — the rank, the age you reach it, and what you'd save per contract there. <span class="fwdOnly">Amounts as you expect them.</span><span class="bwdOnly">Enter the shape you expect; we'll scale it to hit your target age.</span></div>
+          <div class="rankhead"><span>Stage / rank</span><span>From age</span><span>₹ / contract</span><span></span></div>
+          <div class="ranks" id="ranks"></div>
+          <button class="addbtn" id="addRank" type="button">+ Add a stage</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="gl">3 · Life after sailing</div>
+      <div class="gh">The gap you need to cover</div>
+      <div class="grid">
+        <div class="f"><label for="exp">Monthly living costs ashore</label>
+          <div class="inbox"><span class="pre">₹</span><input class="rupee" type="number" id="exp" min="0" placeholder="80,000" inputmode="numeric"></div>
+          <div class="sub">Everyday recurring costs in today's money — the one-off goals go below, not here.</div>
+        </div>
+        <div class="f"><label for="shore">Monthly income you'll still earn</label>
+          <div class="inbox"><span class="pre">₹</span><input class="rupee" type="number" id="shore" min="0" placeholder="30,000" inputmode="numeric"></div>
+          <div class="sub">A shore job, rent, pension — anything you'll keep earning. Zero is fine.</div>
+        </div>
+        <div class="f bwdOnly"><label for="target">Stop sailing at age</label><input type="number" id="target" min="30" max="70" placeholder="50" inputmode="numeric">
+          <div class="sub">The age you want to come ashore for good.</div>
+        </div>
+        <div class="f"><label for="till">Plan until age</label><input type="number" id="till" min="60" max="100" placeholder="85" inputmode="numeric">
+          <div class="sub">How long the money should last.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="gl">3b · Big one-off goals</div>
+      <div class="gh">The lumps that don't fit a monthly figure</div>
+      <p class="glide">A child's education, a wedding, a house, a big trip — these hit in particular years, not every month, and for a seafarer they're often the whole story. Add each as an amount in today's money and the year you'll need it. We fund them on top of your living costs, at their dates. Leave blank if none yet.</p>
+      <div class="goals" id="goals"></div>
+      <button class="addbtn" id="addGoal" type="button">+ Add a goal</button>
+    </div>
+
+    <div class="group">
+      <div class="gl">4 · Your assumptions</div>
+      <div class="gh">The rates — you own these</div>
+      <div class="grid">
+        <div class="f sl">
+          <div class="slhead"><label for="ret">Return on your investments</label><span class="slval" id="retV">10%</span></div>
+          <input type="range" id="ret" min="4" max="15" value="10" step="1">
+          <div class="sub">What you assume your investments earn a year. We compute; we don't pick this for you.</div>
+        </div>
+        <div class="f sl">
+          <div class="slhead"><label for="inf">Inflation</label><span class="slval" id="infV">6%</span></div>
+          <input type="range" id="inf" min="2" max="10" value="6" step="1">
+          <div class="sub">How fast your costs rise.</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="calc">Show my coming-ashore age</button>
+        <button class="btn ghost" id="reset" style="display:none">Reset</button>
       </div>
     </div>
   </div>
 
-  <!-- RHYTHM -->
-  <div class="group">
-    <div class="gl">2 · Your rhythm</div>
-    <div class="gh">How you sail and save</div>
-    <div class="grid">
-      <div class="f"><label for="mon">Months on (a contract)</label><input type="number" id="mon" min="1" max="12" placeholder="6" inputmode="numeric"></div>
-      <div class="f"><label for="moff">Months off (the break)</label><input type="number" id="moff" min="0" max="12" placeholder="3" inputmode="numeric"></div>
-      <div class="f full"><label for="save">What you put aside each contract</label>
-        <div class="inbox"><span class="pre">₹</span><input class="rupee" type="number" id="save" min="0" placeholder="6,00,000" inputmode="numeric"></div>
-        <div class="sub">The amount you actually save and invest from each sign-off — not your whole pay.</div>
-      </div>
-      <div class="f full sl">
-        <div class="slhead"><label for="grow">How much that grows each year</label><span class="slval" id="growV">6%</span></div>
-        <input type="range" id="grow" min="0" max="15" value="6" step="1">
-        <div class="sub">As you get promoted and earn more, you save more. Your call on the pace.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- GAP -->
-  <div class="group">
-    <div class="gl">3 · Life after sailing</div>
-    <div class="gh">The gap you need to cover</div>
-    <div class="grid">
-      <div class="f"><label for="exp">Monthly living costs ashore</label>
-        <div class="inbox"><span class="pre">₹</span><input class="rupee" type="number" id="exp" min="0" placeholder="80,000" inputmode="numeric"></div>
-        <div class="sub">Everyday recurring costs in today's money — the one-off goals go below, not here.</div>
-      </div>
-      <div class="f"><label for="shore">Monthly income you'll still earn</label>
-        <div class="inbox"><span class="pre">₹</span><input class="rupee" type="number" id="shore" min="0" placeholder="30,000" inputmode="numeric"></div>
-        <div class="sub">A shore job, rent, pension — anything you'll keep earning. Zero is fine.</div>
-      </div>
-      <div class="f full"><label for="till">Plan until age</label><input type="number" id="till" min="60" max="100" placeholder="85" inputmode="numeric" style="max-width:160px">
-        <div class="sub">How long the money should last.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- GOALS -->
-  <div class="group">
-    <div class="gl">3b · Big one-off goals</div>
-    <div class="gh">The lumps that don't fit a monthly figure</div>
-    <p class="glide">A child's education, a wedding, a house, a big trip — these hit in particular years, not every month, and for a seafarer they're often the whole story. Add each as an amount in today's money and the year you'll need it. We fund them on top of your living costs, at their dates. Leave blank if none yet.</p>
-    <div class="goals" id="goals"></div>
-    <button class="addgoal" id="addGoal" type="button">+ Add a goal</button>
-  </div>
-
-  <!-- ASSUMPTIONS -->
-  <div class="group">
-    <div class="gl">4 · Your assumptions</div>
-    <div class="gh">The rates — you own these</div>
-    <div class="grid">
-      <div class="f sl">
-        <div class="slhead"><label for="ret">Return on your investments</label><span class="slval" id="retV">10%</span></div>
-        <input type="range" id="ret" min="4" max="15" value="10" step="1">
-        <div class="sub">What you assume your investments earn a year. We compute; we don't pick this for you.</div>
-      </div>
-      <div class="f sl">
-        <div class="slhead"><label for="inf">Inflation</label><span class="slval" id="infV">6%</span></div>
-        <input type="range" id="inf" min="2" max="10" value="6" step="1">
-        <div class="sub">How fast your costs rise.</div>
-      </div>
-    </div>
-    <div class="actions">
-      <button class="btn" id="calc">Show my coming-ashore age</button>
-      <button class="btn ghost" id="reset" style="display:none">Reset</button>
-    </div>
-  </div>
-
-  <!-- RESULT -->
   <div id="result">
-    <div class="hero-out" id="heroOut">
-      <div class="hl" id="hl">You could step ashore around</div>
-      <div class="hbig" id="hbig">—</div>
-      <div class="hsub" id="hsub"></div>
-    </div>
+    <div class="hero-out" id="heroOut"><div class="hl" id="hl">—</div><div class="hbig" id="hbig">—</div><div class="hsub" id="hsub"></div></div>
+    <div class="schedout" id="schedout" style="display:none"></div>
     <div class="numbers" id="numbers"></div>
     <div class="subnote" id="subnote" style="display:none"></div>
     <div class="chartwrap" id="chartwrap">
-      <div class="ct">Your savings, climbing toward the number you need</div>
+      <div class="ct" id="chartTitle">Your savings, climbing toward the number you need</div>
       <div id="chart"></div>
       <div class="legend"><span><span class="sw" style="background:var(--accent)"></span>What you'll have</span><span><span class="sw" style="background:var(--warn)"></span>What you need</span></div>
     </div>
-    <div class="frame"><b>How to read this:</b> it's an illustration built entirely on the numbers and rates <b>you</b> entered — not a forecast, a promise, or a recommendation to invest in anything. Change any slider and the picture changes. Real markets don't move in straight lines, which is why the age is a range, not a date.</div>
-
+    <div class="frame"><b>How to read this:</b> it's an illustration built entirely on the numbers and rates <b>you</b> entered — not a forecast, a promise, or a recommendation to invest in anything. Change any input and the picture changes. Real markets don't move in straight lines, which is why we show a range, not a single certain figure.</div>
     <div class="gate" id="gateBox">
       <div class="gth">Get your coming-ashore plan</div>
       <p>We'll send a plain guide on building toward your number with a sailing income — the sporadic-saving playbook, written for officers. Enter your email.</p>
@@ -262,17 +310,59 @@
   }
   /* ==================================== */
 
+  var form=document.getElementById("form");
   var tb=document.getElementById("themeBtn");
   tb.addEventListener("click",function(){var c=document.documentElement.getAttribute("data-theme");var n=c==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",n);tb.textContent=n==="dark"?"Light":"Dark";try{localStorage.setItem("seafarer-theme",n);}catch(e){}});
   try{var sv=localStorage.getItem("seafarer-theme");if(sv){document.documentElement.setAttribute("data-theme",sv);tb.textContent=sv==="dark"?"Light":"Dark";}}catch(e){}
 
-  // slider value displays
   [["grow","growV"],["ret","retV"],["inf","infV"]].forEach(function(p){
     var s=document.getElementById(p[0]),o=document.getElementById(p[1]);
     s.addEventListener("input",function(){o.textContent=s.value+"%";});
   });
 
-  // goal rows
+  document.getElementById("modeSeg").addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b)return;
+    this.querySelectorAll("button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on");
+    var m=b.getAttribute("data-mode"); form.setAttribute("data-mode",m);
+    document.getElementById("calc").textContent = m==="fwd" ? "Show my coming-ashore age" : "Show what I need to save";
+  });
+  document.getElementById("progSeg").addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b)return;
+    this.querySelectorAll("button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on");
+    form.setAttribute("data-prog", b.getAttribute("data-prog"));
+  });
+  function mode(){return form.getAttribute("data-mode");}
+  function prog(){return form.getAttribute("data-prog");}
+
+  function num(id){var v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;}
+  function fmtIN(x){if(x==null||isNaN(x))return "—";var a=Math.abs(x);
+    if(a>=1e7)return "₹"+(x/1e7).toFixed(a>=1e8?0:2).replace(/\.00$/,"")+" Cr";
+    if(a>=1e5)return "₹"+(x/1e5).toFixed(a>=1e6?0:1).replace(/\.0$/,"")+" L";
+    if(a>=1e3)return "₹"+Math.round(x/1e3)+"K"; return "₹"+Math.round(x);}
+
+  function rankRow(label,age,amt){
+    var d=document.createElement("div"); d.className="rankrow";
+    d.innerHTML='<input class="rlabel" type="text" placeholder="e.g. Chief Officer" aria-label="Rank" value="'+(label||"")+'">'+
+      '<input class="rage" type="number" min="18" max="70" placeholder="age" inputmode="numeric" aria-label="From age" value="'+(age!=null?age:"")+'">'+
+      '<div class="inbox"><span class="pre">₹</span><input class="rupee ramt" type="number" min="0" placeholder="6,00,000" inputmode="numeric" aria-label="Save per contract" value="'+(amt!=null?amt:"")+'"></div>'+
+      '<button class="rm" aria-label="Remove stage" type="button">×</button>';
+    d.querySelector(".rm").addEventListener("click",function(){d.remove();});
+    return d;
+  }
+  var ranksBox=document.getElementById("ranks");
+  ranksBox.appendChild(rankRow("Now",null,null));
+  document.getElementById("addRank").addEventListener("click",function(){ranksBox.appendChild(rankRow("",null,null));});
+  function collectRanks(ageNow){
+    var steps=[];
+    ranksBox.querySelectorAll(".rankrow").forEach(function(row){
+      var age=parseFloat(row.querySelector(".rage").value), amt=parseFloat(row.querySelector(".ramt").value);
+      if(isNaN(age)) age=ageNow;
+      if(!isNaN(amt)&&amt>=0){ steps.push({age:age,amt:amt}); }
+    });
+    steps.sort(function(a,b){return a.age-b.age;});
+    return steps;
+  }
+
   function goalRow(){
     var d=document.createElement("div"); d.className="goalrow";
     d.innerHTML='<input class="glabel" type="text" placeholder="e.g. Child\u2019s education" aria-label="Goal">'+
@@ -288,166 +378,183 @@
   }
   function updateGoalPreview(row){
     var CUR=new Date().getFullYear();
-    var amt=parseFloat(row.querySelector(".gamt").value);
-    var yr=parseFloat(row.querySelector(".gyear").value);
+    var amt=parseFloat(row.querySelector(".gamt").value),yr=parseFloat(row.querySelector(".gyear").value);
     var infl=(parseFloat(document.getElementById("inf").value)||0)/100;
     var pv=row.querySelector(".gpreview");
-    if(!isNaN(amt)&&amt>0&&!isNaN(yr)&&yr>CUR){
-      pv.innerHTML="\u2248 <b>"+fmtIN(amt*Math.pow(1+infl,yr-CUR))+"</b> in "+yr+", at "+(infl*100)+"% inflation";
-    } else { pv.textContent=""; }
+    if(!isNaN(amt)&&amt>0&&!isNaN(yr)&&yr>CUR){ pv.innerHTML="\u2248 <b>"+fmtIN(amt*Math.pow(1+infl,yr-CUR))+"</b> in "+yr+", at "+(infl*100)+"% inflation"; }
+    else { pv.textContent=""; }
   }
   var goalsBox=document.getElementById("goals");
   goalsBox.appendChild(goalRow());
   document.getElementById("addGoal").addEventListener("click",function(){goalsBox.appendChild(goalRow());});
   document.getElementById("inf").addEventListener("input",function(){document.querySelectorAll("#goals .goalrow").forEach(updateGoalPreview);});
-
-  function num(id){var v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;}
-  function fmtIN(x){ // Indian short format
-    if(x==null||isNaN(x))return "—";
-    var a=Math.abs(x);
-    if(a>=1e7) return "₹"+(x/1e7).toFixed(a>=1e8?0:2).replace(/\.00$/,"")+" Cr";
-    if(a>=1e5) return "₹"+(x/1e5).toFixed(a>=1e6?0:1).replace(/\.0$/,"")+" L";
-    if(a>=1e3) return "₹"+Math.round(x/1e3)+"K";
-    return "₹"+Math.round(x);
-  }
-
-  // required corpus at retirement age T: living-gap annuity + present value of goals still ahead of T
-  function requiredAt(gapAnnualToday, ageNow, T, planTill, i, r, goals){
-    var n=T-ageNow; if(n<0)n=0;
-    var gapAtT=gapAnnualToday*Math.pow(1+i,n);
-    var yrs=planTill-T;
-    var base = (yrs<=0) ? 0 : (Math.abs(r-i)<1e-6 ? gapAtT*yrs : gapAtT*(1-Math.pow((1+i)/(1+r),yrs))/(r-i));
-    if(goals) for(var k=0;k<goals.length;k++){
-      var g=goals[k];
-      if(g.age>T){ base += g.amount*Math.pow(1+i,g.age-ageNow)/Math.pow(1+r,g.age-T); } // future-value the goal, discount back to T
-    }
-    return base;
-  }
-
-  // project corpus month-by-month to age T, drawing down goals as they fall due (goals at/before T)
-  function projectTo(ageNow, T, corpus0, savePerContract, growPct, monOn, monOff, r, i, goals){
-    var months=Math.round((T-ageNow)*12); if(months<=0) return corpus0;
-    var mret=Math.pow(1+r,1/12)-1;
-    var cycle=Math.max(1,monOn+monOff);
-    var corpus=corpus0, save=savePerContract, monthsThisYear=0;
-    for(var m=1;m<=months;m++){
-      corpus*=(1+mret);
-      var posInCycle=((m-1)%cycle)+1;
-      if(posInCycle===Math.min(monOn,cycle)) corpus+=save;
-      if(goals) for(var k=0;k<goals.length;k++){
-        if(Math.round((goals[k].age-ageNow)*12)===m){ corpus-=goals[k].amount*Math.pow(1+i,goals[k].age-ageNow); }
-      }
-      monthsThisYear++;
-      if(monthsThisYear===12){ monthsThisYear=0; save*=(1+growPct); }
-    }
-    return corpus;
-  }
-
   function collectGoals(ageNow){
-    var CUR=new Date().getFullYear(), out=[], total=0;
+    var CUR=new Date().getFullYear(),out=[],total=0;
     document.querySelectorAll("#goals .goalrow").forEach(function(row){
-      var amt=parseFloat(row.querySelector(".gamt").value);
-      var yr=parseFloat(row.querySelector(".gyear").value);
+      var amt=parseFloat(row.querySelector(".gamt").value),yr=parseFloat(row.querySelector(".gyear").value);
       if(!isNaN(amt)&&amt>0&&!isNaN(yr)&&yr>=CUR){ out.push({amount:amt,age:ageNow+(yr-CUR)}); total+=amt; }
     });
     return {list:out,total:total,count:out.length};
   }
 
-  function solve(){
-    var ageNow=num("age"),corpus0=num("corpus")||0,monOn=num("mon"),monOff=num("moff"),
-        save=num("save"),grow=num("grow")/100,exp=num("exp"),shore=num("shore")||0,
-        till=num("till")||85,r=num("ret")/100,i=num("inf")/100;
-    if(ageNow==null||monOn==null||save==null||exp==null){return {err:"Fill in your age, contract length, what you save, and your monthly expenses to get a result."};}
-    var gapMonthly=Math.max(0,exp-shore);
-    var G=collectGoals(ageNow), goals=G.list;
-    if(gapMonthly<=0 && G.count===0){return {err:"Your expected income ashore already covers your expenses, and there are no one-off goals set — so there's no target to fund. Add a goal, or adjust expenses/shore income."};}
-    var gapAnnual=gapMonthly*12;
-
-    var cap=75;
-    var rows=[], hitAge=null, hitLow=null, hitHigh=null;
-    function findHit(rr){
-      for(var T=Math.ceil(ageNow);T<=cap;T++){
-        var need=requiredAt(gapAnnual,ageNow,T,till,i,rr,goals);
-        var have=projectTo(ageNow,T,corpus0,save,grow,monOn,monOff,rr,i,goals);
-        if(have>=need) return T;
+  // ===== engine =====
+  function rankAmountAt(age,steps){var amt=steps.length?steps[0].amt:0;for(var k=0;k<steps.length;k++){if(steps[k].age<=age+1e-9)amt=steps[k].amt;}return amt;}
+  function projectTo(ageNow,T,corpus0,contrib,monOn,monOff,r,i,goals){
+    var months=Math.round((T-ageNow)*12); if(months<=0) return corpus0;
+    var mret=Math.pow(1+r,1/12)-1, cycle=Math.max(1,monOn+monOff);
+    var corpus=corpus0, my=0, save=(contrib.mode==="simple")?contrib.base:0;
+    for(var m=1;m<=months;m++){
+      corpus*=(1+mret);
+      var age=ageNow+m/12;
+      if(((m-1)%cycle)+1===Math.min(monOn,cycle)){
+        corpus += (contrib.mode==="simple") ? save : ((contrib.scale||1)*rankAmountAt(age,contrib.steps));
       }
-      return null;
+      if(goals) for(var k=0;k<goals.length;k++){ if(Math.round((goals[k].age-ageNow)*12)===m) corpus-=goals[k].amount*Math.pow(1+i,goals[k].age-ageNow); }
+      my++; if(my===12){my=0; if(contrib.mode==="simple") save*=(1+contrib.grow);}
     }
-    hitAge=findHit(r);
-    hitLow=findHit(Math.min(0.15,r+0.02));
-    hitHigh=findHit(Math.max(0.02,r-0.02));
-
-    var maxAge = hitAge?Math.min(cap,hitAge+4):cap;
-    for(var T=Math.floor(ageNow);T<=maxAge;T++){
-      rows.push({age:T, have:projectTo(ageNow,T,corpus0,save,grow,monOn,monOff,r,i,goals), need:requiredAt(gapAnnual,ageNow,T,till,i,r,goals)});
-    }
-    var Tsolve = hitAge||60;
-    var targetCorpus = requiredAt(gapAnnual,ageNow,Tsolve,till,i,r,goals);
-    var livingCorpus = requiredAt(gapAnnual,ageNow,Tsolve,till,i,r,[]);
-    var goalsAheadPV = Math.max(0,targetCorpus-livingCorpus);
-    var goalsBefore=0;
-    goals.forEach(function(g){ if(g.age<=Tsolve) goalsBefore += g.amount*Math.pow(1+i,g.age-ageNow); });
-    return {ageNow:ageNow,hitAge:hitAge,hitLow:hitLow,hitHigh:hitHigh,rows:rows,gapMonthly:gapMonthly,targetCorpus:targetCorpus,till:till,goalsTotal:G.total,goalsCount:G.count,livingCorpus:livingCorpus,goalsAheadPV:goalsAheadPV,goalsBefore:goalsBefore};
+    return corpus;
+  }
+  function requiredAt(gapAnnualToday,ageNow,T,planTill,i,r,goals){
+    var n=T-ageNow; if(n<0)n=0;
+    var gapAtT=gapAnnualToday*Math.pow(1+i,n), yrs=planTill-T;
+    var base=(yrs<=0)?0:(Math.abs(r-i)<1e-6?gapAtT*yrs:gapAtT*(1-Math.pow((1+i)/(1+r),yrs))/(r-i));
+    if(goals) for(var k=0;k<goals.length;k++){ var g=goals[k]; if(g.age>T) base+=g.amount*Math.pow(1+i,g.age-ageNow)/Math.pow(1+r,g.age-T); }
+    return base;
+  }
+  function findAge(contrib,ageNow,c0,monOn,monOff,r,i,goals,gap,till){
+    for(var T=Math.ceil(ageNow);T<=75;T++){ if(projectTo(ageNow,T,c0,contrib,monOn,monOff,r,i,goals)>=requiredAt(gap,ageNow,T,till,i,r,goals)) return T; }
+    return null;
+  }
+  function solveLevel(targetAge,makeContrib,ageNow,c0,monOn,monOff,r,i,goals,gap,till){
+    var need=requiredAt(gap,ageNow,targetAge,till,i,r,goals);
+    if(projectTo(ageNow,targetAge,c0,makeContrib(0),monOn,monOff,r,i,goals)>=need) return {level:0,need:need,feasible:true};
+    var hi=1,g=0;
+    while(projectTo(ageNow,targetAge,c0,makeContrib(hi),monOn,monOff,r,i,goals)<need && g<80){ hi*=2; g++; }
+    var feasible = projectTo(ageNow,targetAge,c0,makeContrib(hi),monOn,monOff,r,i,goals)>=need;
+    var lo=0; for(var it=0;it<70;it++){ var mid=(lo+hi)/2; if(projectTo(ageNow,targetAge,c0,makeContrib(mid),monOn,monOff,r,i,goals)>=need) hi=mid; else lo=mid; }
+    return {level:hi,need:need,feasible:feasible};
   }
 
-  function drawChart(rows, hitAge, ageNow){
+  function baseInputs(){
+    return {ageNow:num("age"),corpus0:num("corpus")||0,monOn:num("mon"),monOff:num("moff"),
+      exp:num("exp"),shore:num("shore")||0,till:num("till")||85,r:num("ret")/100,i:num("inf")/100};
+  }
+
+  function solve(){
+    var b=baseInputs();
+    if(b.ageNow==null||b.monOn==null||b.exp==null) return {err:"Fill in your age, contract length, and your monthly living costs to get a result."};
+    var grow=num("grow")/100;
+    var G=collectGoals(b.ageNow), goals=G.list;
+    var gapMonthly=Math.max(0,b.exp-b.shore), gapAnnual=gapMonthly*12;
+    if(gapMonthly<=0 && G.count===0) return {err:"Your expected income ashore already covers your expenses, and there are no one-off goals set — so there's no target to fund. Add a goal, or adjust the figures."};
+
+    var isRank=prog()==="rank", steps=collectRanks(b.ageNow);
+    if(isRank && steps.length===0) return {err:"Add at least one promotion stage with an amount, or switch to Simple growth."};
+    function makeC(level){ return isRank ? {mode:"rank",steps:steps,scale:level} : {mode:"simple",base:level,grow:grow}; }
+
+    if(mode()==="fwd"){
+      if(!isRank && num("save")==null) return {err:"Enter what you put aside each contract — or switch to \u201cWhat must I save?\u201d to solve for it."};
+      var contrib = isRank ? {mode:"rank",steps:steps,scale:1} : {mode:"simple",base:(num("save")||0),grow:grow};
+      var hitAge=findAge(contrib,b.ageNow,b.corpus0,b.monOn,b.monOff,b.r,b.i,goals,gapAnnual,b.till);
+      var hitLow=findAge(contrib,b.ageNow,b.corpus0,b.monOn,b.monOff,Math.min(0.15,b.r+0.02),b.i,goals,gapAnnual,b.till);
+      var hitHigh=findAge(contrib,b.ageNow,b.corpus0,b.monOn,b.monOff,Math.max(0.02,b.r-0.02),b.i,goals,gapAnnual,b.till);
+      var maxAge=hitAge?Math.min(75,hitAge+4):75, rows=[];
+      for(var T=Math.floor(b.ageNow);T<=maxAge;T++) rows.push({age:T,have:projectTo(b.ageNow,T,b.corpus0,contrib,b.monOn,b.monOff,b.r,b.i,goals),need:requiredAt(gapAnnual,b.ageNow,T,b.till,b.i,b.r,goals)});
+      var Ts=hitAge||60, target=requiredAt(gapAnnual,b.ageNow,Ts,b.till,b.i,b.r,goals), living=requiredAt(gapAnnual,b.ageNow,Ts,b.till,b.i,b.r,[]);
+      var before=0; goals.forEach(function(g){if(g.age<=Ts)before+=g.amount*Math.pow(1+b.i,g.age-b.ageNow);});
+      return {mode:"fwd",hitAge:hitAge,hitLow:hitLow,hitHigh:hitHigh,rows:rows,gapMonthly:gapMonthly,targetCorpus:target,living:living,goalsAhead:Math.max(0,target-living),goalsBefore:before,till:b.till,goalsTotal:G.total,goalsCount:G.count};
+    } else {
+      var targetAge=num("target");
+      if(targetAge==null||targetAge<=b.ageNow) return {err:"Enter the age you want to stop sailing — it needs to be later than your age now."};
+      var sol=solveLevel(targetAge,makeC,b.ageNow,b.corpus0,b.monOn,b.monOff,b.r,b.i,goals,gapAnnual,b.till);
+      var solHigh=solveLevel(targetAge,makeC,b.ageNow,b.corpus0,b.monOn,b.monOff,Math.max(0.02,b.r-0.02),b.i,goals,gapAnnual,b.till);
+      var solLow=solveLevel(targetAge,makeC,b.ageNow,b.corpus0,b.monOn,b.monOff,Math.min(0.15,b.r+0.02),b.i,goals,gapAnnual,b.till);
+      var contribS=makeC(sol.level);
+      var maxAge=Math.min(75,targetAge+3), rows=[];
+      for(var T=Math.floor(b.ageNow);T<=maxAge;T++) rows.push({age:T,have:projectTo(b.ageNow,T,b.corpus0,contribS,b.monOn,b.monOff,b.r,b.i,goals),need:requiredAt(gapAnnual,b.ageNow,T,b.till,b.i,b.r,goals)});
+      var target2=requiredAt(gapAnnual,b.ageNow,targetAge,b.till,b.i,b.r,goals), living2=requiredAt(gapAnnual,b.ageNow,targetAge,b.till,b.i,b.r,[]);
+      var before2=0; goals.forEach(function(g){if(g.age<=targetAge)before2+=g.amount*Math.pow(1+b.i,g.age-b.ageNow);});
+      var sched=null,startAmt=null,topAmt=null,topLabel="";
+      if(isRank){
+        sched=[];
+        ranksBox.querySelectorAll(".rankrow").forEach(function(row){
+          var age=parseFloat(row.querySelector(".rage").value); if(isNaN(age))age=b.ageNow;
+          var amt=parseFloat(row.querySelector(".ramt").value);
+          var lab=row.querySelector(".rlabel").value||("Age "+age);
+          if(!isNaN(amt)&&amt>=0){ sched.push({label:lab,age:age,amt:amt*sol.level}); }
+        });
+        sched.sort(function(a,b){return a.age-b.age;});
+        if(sched.length){ startAmt=sched[0].amt; topAmt=sched[sched.length-1].amt; topLabel=sched[sched.length-1].label; }
+      } else { startAmt=sol.level; }
+      return {mode:"bwd",targetAge:targetAge,isRank:isRank,level:sol.level,feasible:sol.feasible,startAmt:startAmt,topAmt:topAmt,topLabel:topLabel,sched:sched,
+        saveLow:isRank?null:solLow.level,saveHigh:isRank?null:solHigh.level,
+        rows:rows,gapMonthly:gapMonthly,targetCorpus:target2,living:living2,goalsAhead:Math.max(0,target2-living2),goalsBefore:before2,till:b.till,goalsTotal:G.total,goalsCount:G.count};
+    }
+  }
+
+  function drawChart(rows,markAge){
     var W=560,H=220,pad={l:44,r:14,t:12,b:26};
-    var ages=rows.map(function(d){return d.age;});
     var maxY=Math.max.apply(null,rows.map(function(d){return Math.max(d.have,d.need);}))*1.08||1;
-    var x0=ages[0],x1=ages[ages.length-1];
+    var x0=rows[0].age,x1=rows[rows.length-1].age;
     function X(a){return pad.l+(a-x0)/(x1-x0||1)*(W-pad.l-pad.r);}
     function Y(v){return H-pad.b-(v/maxY)*(H-pad.t-pad.b);}
-    function path(key,color,dash){
-      var d=rows.map(function(p,idx){return (idx?"L":"M")+X(p.age).toFixed(1)+" "+Y(p[key]).toFixed(1);}).join(" ");
-      return '<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2.5"'+(dash?' stroke-dasharray="5 4"':'')+'/>';
-    }
+    function path(key,color,dash){var d=rows.map(function(p,idx){return (idx?"L":"M")+X(p.age).toFixed(1)+" "+Y(p[key]).toFixed(1);}).join(" ");return '<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2.5"'+(dash?' stroke-dasharray="5 4"':'')+'/>';}
     var g="";
-    for(var k=0;k<=2;k++){var yy=pad.t+k*(H-pad.t-pad.b)/2;g+='<line class="grid-l" x1="'+pad.l+'" y1="'+yy+'" x2="'+(W-pad.r)+'" y2="'+yy+'"/>';
-      var val=maxY*(1-k/2);g+='<text x="'+(pad.l-6)+'" y="'+(yy+3)+'" text-anchor="end">'+fmtIN(val)+'</text>';}
-    // x labels (every ~5 yrs)
+    for(var k=0;k<=2;k++){var yy=pad.t+k*(H-pad.t-pad.b)/2;g+='<line class="grid-l" x1="'+pad.l+'" y1="'+yy+'" x2="'+(W-pad.r)+'" y2="'+yy+'"/>';g+='<text x="'+(pad.l-6)+'" y="'+(yy+3)+'" text-anchor="end">'+fmtIN(maxY*(1-k/2))+'</text>';}
     for(var a=Math.ceil(x0/5)*5;a<=x1;a+=5){g+='<text x="'+X(a)+'" y="'+(H-8)+'" text-anchor="middle">'+a+'</text>';}
     g+='<line class="axis" x1="'+pad.l+'" y1="'+(H-pad.b)+'" x2="'+(W-pad.r)+'" y2="'+(H-pad.b)+'"/>';
     var marker="";
-    if(hitAge&&hitAge>=x0&&hitAge<=x1){var mx=X(hitAge);
+    if(markAge&&markAge>=x0&&markAge<=x1){var mx=X(markAge),row=rows.filter(function(d){return d.age===markAge;})[0];
       marker='<line x1="'+mx+'" y1="'+pad.t+'" x2="'+mx+'" y2="'+(H-pad.b)+'" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>'+
-        '<circle cx="'+mx+'" cy="'+Y(rows.filter(function(d){return d.age===hitAge;})[0].have)+'" r="5" fill="var(--accent)"/>'+
-        '<text x="'+mx+'" y="'+(pad.t+2)+'" text-anchor="middle" fill="var(--accent-ink)" font-weight="600">age '+hitAge+'</text>';
-    }
+        (row?'<circle cx="'+mx+'" cy="'+Y(row.have)+'" r="5" fill="var(--accent)"/>':'')+
+        '<text x="'+mx+'" y="'+(pad.t+2)+'" text-anchor="middle" fill="var(--accent-ink)" font-weight="600">age '+markAge+'</text>';}
     return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'+g+path("need","var(--warn)",true)+path("have","var(--accent)",false)+marker+'</svg>';
   }
 
   function render(){
     var res=solve();
-    var out=document.getElementById("result"),hero=document.getElementById("heroOut"),
-        hl=document.getElementById("hl"),hbig=document.getElementById("hbig"),hsub=document.getElementById("hsub"),
-        numbers=document.getElementById("numbers"),chart=document.getElementById("chart"),cw=document.getElementById("chartwrap");
-    out.classList.add("show"); document.getElementById("reset").style.display="inline-block";
-    if(res.err){ hero.style.setProperty("--tone","var(--warn)"); hl.textContent="Almost there"; hbig.innerHTML='<em>—</em>'; hsub.textContent=res.err; numbers.innerHTML=""; cw.style.display="none"; out.scrollIntoView({behavior:"smooth",block:"start"}); return; }
+    var out=document.getElementById("result"),hero=document.getElementById("heroOut"),hl=document.getElementById("hl"),
+        hbig=document.getElementById("hbig"),hsub=document.getElementById("hsub"),numbers=document.getElementById("numbers"),
+        chart=document.getElementById("chart"),cw=document.getElementById("chartwrap"),sn=document.getElementById("subnote"),
+        so=document.getElementById("schedout"),ctitle=document.getElementById("chartTitle");
+    out.classList.add("show"); document.getElementById("reset").style.display="inline-block"; so.style.display="none";
+    if(res.err){ hero.style.setProperty("--tone","var(--warn)"); hl.textContent="Almost there"; hbig.innerHTML='<em>—</em>'; hsub.textContent=res.err; numbers.innerHTML=""; sn.style.display="none"; cw.style.display="none"; out.scrollIntoView({behavior:"smooth",block:"start"}); return; }
     cw.style.display="block";
-    var yearsToGo = res.hitAge? (res.hitAge-res.ageNow):null;
 
-    if(!res.hitAge){
-      hero.style.setProperty("--tone","var(--warn)");
-      hl.textContent="Not by age 75 — on these numbers";
-      hbig.innerHTML='<em>Keep going</em>';
-      hsub.innerHTML="With what you're saving and the rates you set, the pot doesn't reach the number by 75. Nudge the saving up, the growth up, or the gap down — or talk it through. Small changes move this a lot.";
+    if(res.mode==="fwd"){
+      ctitle.textContent="Your savings, climbing toward the number you need";
+      if(!res.hitAge){ hero.style.setProperty("--tone","var(--warn)"); hl.textContent="Not by age 75 — on these numbers"; hbig.innerHTML='<em>Keep going</em>'; hsub.innerHTML="With what you're saving and the rates you set, the pot doesn't reach the number by 75. Nudge the saving up, the growth up, or the gap down — or flip to <b>What must I save?</b> to see the figure for a target age."; }
+      else { hero.style.setProperty("--tone","var(--accent)"); hl.textContent="You could step ashore around"; hbig.innerHTML='<em>age '+res.hitAge+'</em>';
+        var yrs=res.hitAge-num("age");
+        var range=(res.hitLow&&res.hitHigh&&res.hitLow!==res.hitHigh)?(" \u2014 somewhere between <b>"+res.hitLow+"</b> and <b>"+res.hitHigh+"</b> depending on how your investments actually do"):"";
+        hsub.innerHTML="That's about <b>"+yrs+" more "+(yrs===1?"year":"years")+"</b> at sea"+range+"."; }
+      chart.innerHTML=drawChart(res.rows,res.hitAge);
     } else {
-      hero.style.setProperty("--tone","var(--accent)");
-      hl.textContent="You could step ashore around";
-      hbig.innerHTML='<em>age '+res.hitAge+'</em>';
-      var range = (res.hitLow&&res.hitHigh&&(res.hitLow!==res.hitHigh))? (" — somewhere between <b>"+res.hitLow+"</b> and <b>"+res.hitHigh+"</b> depending on how your investments actually do") : "";
-      hsub.innerHTML="That's about <b>"+yearsToGo+" more "+(yearsToGo===1?"year":"years")+"</b> at sea"+range+".";
+      ctitle.textContent="The saving path that gets you there by "+res.targetAge;
+      if(!res.feasible){ hero.style.setProperty("--tone","var(--warn)"); hl.textContent="Age "+res.targetAge+" is a stretch"; hbig.innerHTML='<em>Very high</em>'; hsub.innerHTML="Even a large saving doesn't reach your number by "+res.targetAge+" on these figures \u2014 the gap or the goals may be too big for that age. Try a slightly later age, or trim the target."; }
+      else {
+        hero.style.setProperty("--tone","var(--accent)"); hl.textContent="To step ashore by "+res.targetAge+", put aside about";
+        hbig.innerHTML='<em>'+fmtIN(res.startAmt)+'</em><span style="font-size:16px;color:var(--ink-soft)"> / contract, now</span>';
+        if(res.isRank){
+          hsub.innerHTML="Rising to <b>"+fmtIN(res.topAmt)+"</b> per contract by "+(res.topLabel||"your top rank")+", following the promotion path you mapped.";
+          so.style.display="block";
+          so.innerHTML=res.sched.map(function(s){return '<div class="sor"><span class="sl2">'+s.label+' \u00b7 from age '+s.age+'</span><span class="sv2">'+fmtIN(s.amt)+' / contract</span></div>';}).join("");
+        } else {
+          var rng=(res.saveLow&&res.saveHigh&&Math.round(res.saveLow)!==Math.round(res.saveHigh))?(" If returns run softer, closer to <b>"+fmtIN(res.saveHigh)+"</b>; stronger, nearer <b>"+fmtIN(res.saveLow)+"</b>."):"";
+          hsub.innerHTML="Growing at your "+(num("grow"))+"% assumption each year as you're promoted."+rng;
+        }
+      }
+      chart.innerHTML=drawChart(res.rows,res.feasible?res.targetAge:null);
     }
-    var bl = res.goalsAheadPV>0 ? ('living costs '+fmtIN(res.livingCorpus)+' + goals still ahead '+fmtIN(res.goalsAheadPV)) : ('covers your living gap to age '+res.till);
-    var nbHtml=
-      '<div class="nb"><div class="nl">Your number</div><div class="nv">'+fmtIN(res.targetCorpus)+'</div><div class="nd">'+bl+'</div></div>'+
+
+    var bl=res.goalsAhead>0?('living costs '+fmtIN(res.living)+' + goals still ahead '+fmtIN(res.goalsAhead)):('covers your living gap to age '+res.till);
+    var nbHtml='<div class="nb"><div class="nl">Your number</div><div class="nv">'+fmtIN(res.targetCorpus)+'</div><div class="nd">'+bl+'</div></div>'+
       '<div class="nb"><div class="nl">Monthly gap</div><div class="nv">'+fmtIN(res.gapMonthly)+'<span style="font-size:14px;color:var(--ink-soft)">/mo</span></div><div class="nd">expenses minus shore income, in today\'s money</div></div>';
-    if(res.goalsCount){ nbHtml+='<div class="nb"><div class="nl">One-off goals (today\'s money)</div><div class="nv">'+fmtIN(res.goalsTotal)+'</div><div class="nd">'+res.goalsCount+' goal'+(res.goalsCount>1?'s':'')+', shown as entered \u2014 funded inflated to their years</div></div>'; }
+    if(res.goalsCount) nbHtml+='<div class="nb"><div class="nl">One-off goals (today\'s money)</div><div class="nv">'+fmtIN(res.goalsTotal)+'</div><div class="nd">'+res.goalsCount+' goal'+(res.goalsCount>1?'s':'')+', shown as entered \u2014 funded inflated to their years</div></div>';
     numbers.innerHTML=nbHtml;
-    var sn=document.getElementById("subnote");
-    if(res.goalsBefore>0 && res.hitAge){ sn.style.display="block"; sn.innerHTML='<b>Not in the number above:</b> about <b>'+fmtIN(res.goalsBefore)+'</b> of goals fall due <em>before</em> you come ashore, so they\u2019re paid from your savings on the way up \u2014 already worked into your age of '+res.hitAge+'.'; }
-    else { sn.style.display="none"; }
-    chart.innerHTML=drawChart(res.rows,res.hitAge,res.ageNow);
+    var Tref=(res.mode==="fwd")?res.hitAge:res.targetAge;
+    if(res.goalsBefore>0 && Tref){ sn.style.display="block"; sn.innerHTML='<b>Not in the number above:</b> about <b>'+fmtIN(res.goalsBefore)+'</b> of goals fall due <em>before</em> you come ashore, so they\u2019re paid from your savings on the way up \u2014 already worked into the figure.'; }
+    else sn.style.display="none";
     out.scrollIntoView({behavior:"smooth",block:"start"});
   }
 
@@ -456,8 +563,9 @@
   document.getElementById("sendGuide").addEventListener("click",function(){
     var em=document.getElementById("email").value.trim();
     if(!/.+@.+\..+/.test(em)){document.getElementById("email").focus();return;}
-    var r=solve();
-    captureLead(em,"coming-ashore", r&&!r.err?("age "+(r.hitAge||">75")+", number "+fmtIN(r.targetCorpus)+(r.goalsCount?(", "+r.goalsCount+" goals"):"")):"");
+    var r=solve(), detail="";
+    if(r&&!r.err){ detail = r.mode==="fwd" ? ("fwd age "+(r.hitAge||">75")) : ("bwd target "+r.targetAge+" save "+fmtIN(r.startAmt)); detail+=(r.goalsCount?(", "+r.goalsCount+" goals"):""); }
+    captureLead(em,"coming-ashore",detail);
     document.getElementById("gateRow").innerHTML='<div style="color:var(--good);font-weight:500">Thanks — the plan is on its way to '+em+'.</div>';
   });
 })();
